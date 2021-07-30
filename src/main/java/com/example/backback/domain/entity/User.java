@@ -4,9 +4,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
-import javax.transaction.Transactional;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.HashSet;
 import java.util.Set;
@@ -17,21 +17,11 @@ import java.util.Set;
                 "username"
         }),
         @UniqueConstraint(columnNames = {
-                "password"
-        }),
-        @UniqueConstraint(columnNames = {
                 "email"
         }),
         @UniqueConstraint(columnNames = {
-                "firstname"
+                "phone"
         }),
-        @UniqueConstraint(columnNames = {
-                "lastname"
-        }),
-        @UniqueConstraint(columnNames = {
-                "city"
-        }),
-
 
 })
 public class User {
@@ -42,16 +32,16 @@ public class User {
     @Size(min = 3, max = 50)
     private String username;
     @JsonIgnore
-    @NotBlank
+    @NotNull
     @Size(min = 6, max = 100)
     private String password;
-    @NotBlank
+    @NotNull
+    @Size(min = 10, max = 11)
+    private String phone;
+    @NotNull
     @Size(min = 3, max = 50)
-    private String firstname;
-    @NotBlank
-    @Size(min = 3, max = 50)
-    private String lastname;
-    @NotBlank
+    private String dateofbirth;
+    @NotNull
     @Size(min = 3, max = 50)
     private String city;
     @NaturalId
@@ -61,7 +51,7 @@ public class User {
     private String email;
     @Lob
     private String image;
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "user_role",
             joinColumns = @JoinColumn(name = "user_id"),inverseJoinColumns = @JoinColumn(name = "role_id"))
     Set<Role> roles = new HashSet<>();
@@ -69,33 +59,33 @@ public class User {
     public User() {
     }
 
-    public User(Long id, String username, String password,String firstname, String lastname, String city, String email, String image, Set<Role> roles) {
+    public User(Long id, String username, String password, String phone, String dateofbirth, String city, String email, String image, Set<Role> roles) {
         this.id = id;
         this.username = username;
         this.password = password;
-        this.firstname = firstname;
-        this.lastname = lastname;
+        this.phone = phone;
+        this.dateofbirth = dateofbirth;
         this.city = city;
         this.email = email;
         this.image = image;
         this.roles = roles;
     }
 
-    public User(@NotBlank @Size(min = 3, max = 50) String username, @NotBlank @Size(min = 6, max = 100) String encode, @NotBlank @Size(min = 3, max = 50) String firstname, @NotBlank @Size(min = 3, max = 50) String lastname, @NotBlank @Size(min = 3, max = 50) String city, @NotBlank @Size(max = 50) @Email String email) {
+    public User(@NotBlank @Size(min = 3, max = 50) String username, @NotBlank @Size(min = 6, max = 100) String encode, @NotBlank @Size(min = 3, max = 50) String phone, @NotBlank @Size(min = 3, max = 50) String dateofbirth, @NotBlank @Size(min = 3, max = 50) String city, @NotBlank @Size(max = 50) @Email String email) {
         this.username = username;
         this.password = encode;
-        this.firstname = firstname;
-        this.lastname = lastname;
+        this.phone = phone;
+        this.dateofbirth = dateofbirth;
         this.city = city;
         this.email = email;
     }
 
-    public User(Long id, @NotBlank @Size(min = 3, max = 50) String username, @NotBlank @Size(min = 6, max = 100) String password, @NotBlank @Size(min = 3, max = 50) String firstname, @NotBlank @Size(min = 3, max = 50) String lastname, @NotBlank @Size(min = 3, max = 50) String city, @NotBlank @Size(max = 50) @Email String email, Set<Role> roles) {
+    public User(Long id, @NotBlank @Size(min = 3, max = 50) String username, @NotBlank @Size(min = 6, max = 100) String password, @NotBlank @Size(min = 3, max = 50) String phone, @NotBlank @Size(min = 3, max = 50) String dateofbirth, @NotBlank @Size(min = 3, max = 50) String city, @NotBlank @Size(max = 50) @Email String email, Set<Role> roles) {
         this.id = id;
         this.username = username;
         this.password = password;
-        this.firstname = firstname;
-        this.lastname = lastname;
+        this.phone = phone;
+        this.dateofbirth = dateofbirth;
         this.city = city;
         this.email = email;
         this.roles = roles;
@@ -127,20 +117,20 @@ public class User {
         this.password = password;
     }
 
-    public String getFirstname() {
-        return firstname;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setFirstname(String firstname) {
-        this.firstname = firstname;
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
-    public String getLastname() {
-        return lastname;
+    public String getDateofbirth() {
+        return dateofbirth;
     }
 
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
+    public void setDateofbirth(String lastname) {
+        this.dateofbirth = lastname;
     }
 
     public String getCity() {

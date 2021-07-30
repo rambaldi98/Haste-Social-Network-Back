@@ -14,8 +14,8 @@ import java.util.stream.Collectors;
 public class UserPrinciple implements UserDetails {
     private Long id;
     private String username;
-    private String firstname;
-    private String lastname;
+    private String phone;
+    private String dateofbirth;
     private String email;
     private String city;
     @JsonIgnore
@@ -26,11 +26,11 @@ public class UserPrinciple implements UserDetails {
     public UserPrinciple() {
     }
 
-    public UserPrinciple(Long id, String username, String firstname, String lastname, String email, String city, String password, String image, Collection<? extends GrantedAuthority> roles) {
+    public UserPrinciple(Long id, String username, String phone, String dateofbirth, String email, String city, String password, String image, Collection<? extends GrantedAuthority> roles) {
         this.id = id;
         this.username = username;
-        this.firstname = firstname;
-        this.lastname = lastname;
+        this.phone = phone;
+        this.dateofbirth = dateofbirth;
         this.email = email;
         this.city = city;
         this.password = password;
@@ -44,8 +44,8 @@ public class UserPrinciple implements UserDetails {
         return new UserPrinciple(
                 user.getId(),
                 user.getUsername(),
-                user.getFirstname(),
-                user.getLastname(),
+                user.getPhone(),
+                user.getDateofbirth(),
                 user.getEmail(),
                 user.getPassword(),
                 user.getCity(),
@@ -54,20 +54,20 @@ public class UserPrinciple implements UserDetails {
         );
     }
 
-    public String getFirstname() {
-        return firstname;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setFirstname(String firstname) {
-        this.firstname = firstname;
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
-    public String getLastname() {
-        return lastname;
+    public String getDateofbirth() {
+        return dateofbirth;
     }
 
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
+    public void setDateofbirth(String dateofbirth) {
+        this.dateofbirth = dateofbirth;
     }
 
     @Override

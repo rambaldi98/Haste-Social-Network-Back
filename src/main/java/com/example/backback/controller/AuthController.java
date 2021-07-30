@@ -50,8 +50,8 @@ public class AuthController {
         User user = new User(
                         signUpForm.getUsername(),
                 passwordEncoder.encode(signUpForm.getPassword()),
-                        signUpForm.getFirstname(),
-                        signUpForm.getLastname(),
+                        signUpForm.getPhone(),
+                        signUpForm.getDateofbirth(),
                         signUpForm.getCity(),
                         signUpForm.getEmail());
         Set<String> strRoles = signUpForm.getRoles();
@@ -73,13 +73,16 @@ public class AuthController {
         userService.save(user);
         return new ResponseEntity<>(new ResponMessage("yes"), HttpStatus.OK);
     }
+
     @PostMapping("/signin")
     public ResponseEntity<?> login(@Valid @RequestBody SignInForm signInForm){
+
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(signInForm.getUsername(), signInForm.getPassword()));
+
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String token = jwtProvider.createToken(authentication);
         UserPrinciple userPrinciple = (UserPrinciple) authentication.getPrincipal();
-        return ResponseEntity.ok(new JwtResponse(token, userPrinciple.getFirstname(), userPrinciple.getAuthorities()));
+        return ResponseEntity.ok(new JwtResponse(token, userPrinciple.getUsername(), userPrinciple.getAuthorities()));
     }
 }

@@ -6,8 +6,8 @@ public class SignUpForm {
     private String username;
     private String email;
     private String password;
-    private String firstname;
-    private String lastname;
+    private String phone;
+    private String dateofbirth;
     private String city;
 
     private Set<String> roles;
@@ -15,12 +15,12 @@ public class SignUpForm {
     public SignUpForm() {
     }
 
-    public SignUpForm(String username, String email, String password, String firstname, String lastname, String city, Set<String> roles) {
+    public SignUpForm(String username, String email, String password, String phone, String dateofbirth, String city, Set<String> roles) {
         this.username = username;
         this.email = email;
         this.password = password;
-        this.firstname = firstname;
-        this.lastname = lastname;
+        this.phone = phone;
+        this.dateofbirth = dateofbirth;
         this.city = city;
         this.roles = roles;
     }
@@ -49,20 +49,20 @@ public class SignUpForm {
         this.password = password;
     }
 
-    public String getFirstname() {
-        return firstname;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setFirstname(String firstname) {
-        this.firstname = firstname;
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
-    public String getLastname() {
-        return lastname;
+    public String getDateofbirth() {
+        return dateofbirth;
     }
 
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
+    public void setDateofbirth(String dateofbirth) {
+        this.dateofbirth = dateofbirth;
     }
 
     public String getCity() {
