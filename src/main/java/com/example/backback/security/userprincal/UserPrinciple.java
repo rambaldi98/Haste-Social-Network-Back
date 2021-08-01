@@ -14,61 +14,53 @@ import java.util.stream.Collectors;
 public class UserPrinciple implements UserDetails {
     private Long id;
     private String username;
-    private String phone;
-    private String dateofbirth;
-    private String email;
-    private String city;
     @JsonIgnore
     private String password;
+    private String email;
+    private String phone;
+    private String birthday;
+    private String city;
+
     private String image;
     private Collection<? extends GrantedAuthority> roles;
+
 
     public UserPrinciple() {
     }
 
-    public UserPrinciple(Long id, String username, String phone, String dateofbirth, String email, String city, String password, String image, Collection<? extends GrantedAuthority> roles) {
+    public UserPrinciple(Long id, String username, String password, String email, String phone, String birthday, String city, String image, Collection<? extends GrantedAuthority> roles) {
         this.id = id;
         this.username = username;
-        this.phone = phone;
-        this.dateofbirth = dateofbirth;
-        this.email = email;
-        this.city = city;
         this.password = password;
+        this.email = email;
+        this.phone = phone;
+        this.birthday = birthday;
+        this.city = city;
         this.image = image;
         this.roles = roles;
     }
 
-    public static UserPrinciple build(User user){
-        List<GrantedAuthority> authorities = user.getRoles().stream().map(role->
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+
+    public static UserPrinciple build(User user) {
+        List<GrantedAuthority> authorities = user.getRoles().stream().map(role ->
                 new SimpleGrantedAuthority(role.getName().name())).collect(Collectors.toList());
         return new UserPrinciple(
                 user.getId(),
                 user.getUsername(),
-                user.getPhone(),
-                user.getDateofbirth(),
-                user.getEmail(),
                 user.getPassword(),
+                user.getEmail(),
+                user.getPhone(),
+                user.getBirthday(),
                 user.getCity(),
                 user.getImage(),
                 authorities
         );
     }
 
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public String getDateofbirth() {
-        return dateofbirth;
-    }
-
-    public void setDateofbirth(String dateofbirth) {
-        this.dateofbirth = dateofbirth;
-    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

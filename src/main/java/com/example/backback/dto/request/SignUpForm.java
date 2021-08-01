@@ -4,10 +4,10 @@ import java.util.Set;
 
 public class SignUpForm {
     private String username;
-    private String email;
     private String password;
+    private String email;
     private String phone;
-    private String dateofbirth;
+    private String birthday;
     private String city;
 
     private Set<String> roles;
@@ -15,12 +15,12 @@ public class SignUpForm {
     public SignUpForm() {
     }
 
-    public SignUpForm(String username, String email, String password, String phone, String dateofbirth, String city, Set<String> roles) {
+    public SignUpForm(String username, String password, String email, String phone, String birthday, String city, Set<String> roles) {
         this.username = username;
-        this.email = email;
         this.password = password;
+        this.email = email;
         this.phone = phone;
-        this.dateofbirth = dateofbirth;
+        this.birthday = birthday;
         this.city = city;
         this.roles = roles;
     }
@@ -57,12 +57,12 @@ public class SignUpForm {
         this.phone = phone;
     }
 
-    public String getDateofbirth() {
-        return dateofbirth;
+    public String getBirthday() {
+        return birthday;
     }
 
-    public void setDateofbirth(String dateofbirth) {
-        this.dateofbirth = dateofbirth;
+    public void setBirthday(String birthday) {
+        this.birthday = birthday;
     }
 
     public String getCity() {

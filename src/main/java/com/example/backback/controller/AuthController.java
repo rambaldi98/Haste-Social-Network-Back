@@ -39,33 +39,34 @@ public class AuthController {
     AuthenticationManager authenticationManager;
     @Autowired
     JwtProvider jwtProvider;
+
     @PostMapping("/signup")
-    public ResponseEntity<?> register(@Valid @RequestBody SignUpForm signUpForm){
-        if(userService.existsByUsername(signUpForm.getUsername())){
+    public ResponseEntity<?> register(@Valid @RequestBody SignUpForm signUpForm) {
+        if (userService.existsByUsername(signUpForm.getUsername())) {
             return new ResponseEntity<>(new ResponMessage("No User"), HttpStatus.OK);
         }
-        if(userService.existsByEmail(signUpForm.getEmail())){
+        if (userService.existsByEmail(signUpForm.getEmail())) {
             return new ResponseEntity<>(new ResponMessage("No Email"), HttpStatus.OK);
         }
         User user = new User(
-                        signUpForm.getUsername(),
+                signUpForm.getUsername(),
                 passwordEncoder.encode(signUpForm.getPassword()),
-                        signUpForm.getPhone(),
-                        signUpForm.getDateofbirth(),
-                        signUpForm.getCity(),
-                        signUpForm.getEmail());
-        Set<String> strRoles = signUpForm.getRoles();
+                signUpForm.getEmail(),
+                signUpForm.getPhone(),
+                signUpForm.getBirthday(),
+                signUpForm.getCity());
+                Set<String> strRoles = signUpForm.getRoles();
         Set<Role> roles = new HashSet<>();
-        strRoles.forEach(role ->{
-            switch (role){
+        strRoles.forEach(role -> {
+            switch (role) {
                 case "admin":
                     Role adminRole = roleService.findByName(RoleName.ADMIN).orElseThrow(
-                            ()-> new RuntimeException("Role not found")
+                            () -> new RuntimeException("Role not found")
                     );
                     roles.add(adminRole);
                     break;
                 default:
-                    Role userRole = roleService.findByName(RoleName.USER).orElseThrow( ()-> new RuntimeException("Role not found"));
+                    Role userRole = roleService.findByName(RoleName.USER).orElseThrow(() -> new RuntimeException("Role not found"));
                     roles.add(userRole);
             }
         });
@@ -75,11 +76,9 @@ public class AuthController {
     }
 
     @PostMapping("/signin")
-    public ResponseEntity<?> login(@Valid @RequestBody SignInForm signInForm){
-
+    public ResponseEntity<?> login(@Valid @RequestBody SignInForm signInForm) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(signInForm.getUsername(), signInForm.getPassword()));
-
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String token = jwtProvider.createToken(authentication);
         UserPrinciple userPrinciple = (UserPrinciple) authentication.getPrincipal();

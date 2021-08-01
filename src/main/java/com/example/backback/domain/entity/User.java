@@ -6,7 +6,6 @@ import org.hibernate.annotations.NaturalId;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.HashSet;
 import java.util.Set;
@@ -28,29 +27,37 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @NotBlank
     @Size(min = 3, max = 50)
     private String username;
+
     @JsonIgnore
-    @NotNull
+    @NotBlank
     @Size(min = 6, max = 100)
     private String password;
-    @NotNull
-    @Size(min = 10, max = 11)
-    private String phone;
-    @NotNull
-    @Size(min = 3, max = 50)
-    private String dateofbirth;
-    @NotNull
-    @Size(min = 3, max = 50)
-    private String city;
+
     @NaturalId
     @NotBlank
     @Size(max = 50)
     @Email
     private String email;
+
+    @NotBlank
+    @Size(min = 10, max = 11)
+    private String phone;
+
+    @NotBlank
+    @Size(min = 3, max = 50)
+    private String birthday;
+
+    @NotBlank
+    @Size(min = 3, max = 50)
+    private String city;
+
     @Lob
     private String image;
+
     @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(name = "user_role",
             joinColumns = @JoinColumn(name = "user_id"),inverseJoinColumns = @JoinColumn(name = "role_id"))
@@ -59,39 +66,43 @@ public class User {
     public User() {
     }
 
-    public User(Long id, String username, String password, String phone, String dateofbirth, String city, String email, String image, Set<Role> roles) {
+    public User(Long id, String username, String password,String email, String phone, String birthday, String city,  String image, Set<Role> roles) {
         this.id = id;
         this.username = username;
         this.password = password;
-        this.phone = phone;
-        this.dateofbirth = dateofbirth;
-        this.city = city;
         this.email = email;
+        this.phone = phone;
+        this.birthday = birthday;
+        this.city = city;
         this.image = image;
         this.roles = roles;
     }
 
-    public User(@NotBlank @Size(min = 3, max = 50) String username, @NotBlank @Size(min = 6, max = 100) String encode, @NotBlank @Size(min = 3, max = 50) String phone, @NotBlank @Size(min = 3, max = 50) String dateofbirth, @NotBlank @Size(min = 3, max = 50) String city, @NotBlank @Size(max = 50) @Email String email) {
+    public User(@NotBlank
+                @Size(min = 3, max = 50)String username,
+                @NotBlank
+                @Size(min = 6, max = 100)
+                String encode,
+                @NotBlank
+                @Size(max = 50)
+                @Email
+                String email,
+                @NotBlank
+                @Size(min = 10, max = 11)
+                String phone,
+                @NotBlank
+                @Size(min = 3, max = 50)
+                String birthday,
+                @NotBlank
+                @Size(min = 3, max = 50)
+                String city) {
         this.username = username;
         this.password = encode;
-        this.phone = phone;
-        this.dateofbirth = dateofbirth;
-        this.city = city;
         this.email = email;
-    }
-
-    public User(Long id, @NotBlank @Size(min = 3, max = 50) String username, @NotBlank @Size(min = 6, max = 100) String password, @NotBlank @Size(min = 3, max = 50) String phone, @NotBlank @Size(min = 3, max = 50) String dateofbirth, @NotBlank @Size(min = 3, max = 50) String city, @NotBlank @Size(max = 50) @Email String email, Set<Role> roles) {
-        this.id = id;
-        this.username = username;
-        this.password = password;
         this.phone = phone;
-        this.dateofbirth = dateofbirth;
+        this.birthday = birthday;
         this.city = city;
-        this.email = email;
-        this.roles = roles;
     }
-
-
 
     public Long getId() {
         return id;
@@ -125,12 +136,12 @@ public class User {
         this.phone = phone;
     }
 
-    public String getDateofbirth() {
-        return dateofbirth;
+    public String getBirthday() {
+        return birthday;
     }
 
-    public void setDateofbirth(String lastname) {
-        this.dateofbirth = lastname;
+    public void setBirthday(String lastname) {
+        this.birthday = lastname;
     }
 
     public String getCity() {
