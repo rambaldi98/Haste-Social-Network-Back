@@ -16,6 +16,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.Optional;
 
@@ -52,17 +53,21 @@ public class AdminController {
         UserPrinciple userPrinciple = (UserPrinciple) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 //        System.out.println(userPrinciple + signInForm.getUsername());
         // tim kiem user trong data base
+
+        if(signInForm.getPassword().length() < 6 | signInForm.getPassword().length() >32)
+            return new ResponseEntity<>(new ResponMessage("password valid"), HttpStatus.BAD_REQUEST);
         if(signInForm.getUsername().equals(userPrinciple.getUsername()))
         {
 //            return ResponseEntity.ok("co the doi mat khau");
             Optional<User> user = userService.findByUsername(signInForm.getUsername());
             user.get().setPassword(passwordEncoder.encode(signInForm.getPassword()));
             userService.save(user.get());
-          jwtProvider.createToken(authenticationManager.authenticate(SecurityContextHolder.getContext().getAuthentication()));
+//            System.out.println(jwtProvider);
+//          jwtProvider.createToken(authenticationManager.authenticate(SecurityContextHolder.getContext().getAuthentication()));
 //            System.out.println(token);
-            return  new ResponseEntity<> ( new ResponMessage("done"),HttpStatus.OK);
+            return  new ResponseEntity<> ( new ResponMessage("change password success"),HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(new ResponMessage("not found user"), HttpStatus.OK);
+            return new ResponseEntity<>(new ResponMessage("user valid"), HttpStatus.OK);
         }
 //        return new ResponseEntity<>(new ResponMessage("not fount user"), HttpStatus.OK);
     }
