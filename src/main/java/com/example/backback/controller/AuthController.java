@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 @RequestMapping("/api/auth")
@@ -55,25 +56,19 @@ public class AuthController {
                 signUpForm.getPhone(),
                 signUpForm.getBirthday(),
                 signUpForm.getCity());
-                Set<String> strRoles = signUpForm.getRoles();
+
+
         Set<Role> roles = new HashSet<>();
-        strRoles.forEach(role -> {
-            switch (role) {
-                case "admin":
-                    Role adminRole = roleService.findByName(RoleName.ADMIN).orElseThrow(
-                            () -> new RuntimeException("Role not found")
-                    );
-                    roles.add(adminRole);
-                    break;
-                default:
-                    Role userRole = roleService.findByName(RoleName.USER).orElseThrow(() -> new RuntimeException("Role not found"));
-                    roles.add(userRole);
-            }
-        });
+
+        Role roleUser = new Role();
+                    roleUser.setId(2L);
+                    roleUser.setName(RoleName.USER);
+                    roles.add(roleUser);
         user.setRoles(roles);
         userService.save(user);
         return new ResponseEntity<>(new ResponMessage("yes"), HttpStatus.OK);
     }
+
 
     @PostMapping("/signin")
     public ResponseEntity<?> login(@Valid @RequestBody SignInForm signInForm) {
