@@ -2,6 +2,7 @@ package com.example.backback.controller;
 
 import com.example.backback.domain.entity.User;
 import com.example.backback.dto.request.SignInForm;
+import com.example.backback.dto.response.ResponMessage;
 import com.example.backback.security.jwt.JwtProvider;
 import com.example.backback.security.userprincal.UserPrinciple;
 import com.example.backback.service.impl.RoleServiceImpl;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -33,7 +35,8 @@ public class AdminController {
     @Autowired
     JwtProvider jwtProvider;
 
-  ;
+
+    ;
     @GetMapping
     public ResponseEntity<?> test(){
 //        System.out.println( SecurityContextHolder.getContext().getAuthentication());
@@ -55,7 +58,12 @@ public class AdminController {
             Optional<User> user = userService.findByUsername(signInForm.getUsername());
             user.get().setPassword(passwordEncoder.encode(signInForm.getPassword()));
             userService.save(user.get());
+          jwtProvider.createToken(authenticationManager.authenticate(SecurityContextHolder.getContext().getAuthentication()));
+//            System.out.println(token);
+            return  new ResponseEntity<> ( new ResponMessage("done"),HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(new ResponMessage("not found user"), HttpStatus.OK);
         }
-        return  ResponseEntity.ok( userPrinciple);
+//        return new ResponseEntity<>(new ResponMessage("not fount user"), HttpStatus.OK);
     }
 }

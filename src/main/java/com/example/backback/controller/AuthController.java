@@ -44,11 +44,16 @@ public class AuthController {
     @PostMapping("/signup")
     public ResponseEntity<?> register(@Valid @RequestBody SignUpForm signUpForm) {
         if (userService.existsByUsername(signUpForm.getUsername())) {
-            return new ResponseEntity<>(new ResponMessage("No User"), HttpStatus.OK);
+            return new ResponseEntity<>(new ResponMessage("User is exist"), HttpStatus.OK);
         }
         if (userService.existsByEmail(signUpForm.getEmail())) {
-            return new ResponseEntity<>(new ResponMessage("No Email"), HttpStatus.OK);
+            return new ResponseEntity<>(new ResponMessage("Email is exist"), HttpStatus.OK);
         }
+        if (userService.existsByPhone(signUpForm.getPhone())) {
+            return new ResponseEntity<>(new ResponMessage("Phone is exist"), HttpStatus.OK);
+        }
+
+
         User user = new User(
                 signUpForm.getUsername(),
                 passwordEncoder.encode(signUpForm.getPassword()),
@@ -67,10 +72,10 @@ public class AuthController {
                         );
                         roles.add(adminRole);
                         break;
-                    default:
-                        Role userRole = roleService.findByName(RoleName.USER).orElseThrow(() -> new RuntimeException("Role not found"));
-                        roles.add(userRole);
-                        break;
+//                    default:
+//                        Role userRole = roleService.findByName(RoleName.USER).orElseThrow(() -> new RuntimeException("Role not found"));
+//                        roles.add(userRole);
+//                        break;
                 }
             });
         } else {
@@ -92,9 +97,5 @@ public class AuthController {
 
         return ResponseEntity.ok(new JwtResponse( userPrinciple.getId(),token, userPrinciple.getUsername(), userPrinciple.getAuthorities()));
     }
-
-
-
-
 
 }
