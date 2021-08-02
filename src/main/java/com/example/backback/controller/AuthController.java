@@ -12,6 +12,7 @@ import com.example.backback.security.userprincal.UserPrinciple;
 import com.example.backback.service.impl.RoleServiceImpl;
 import com.example.backback.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -57,19 +58,25 @@ public class AuthController {
                 signUpForm.getCity());
                 Set<String> strRoles = signUpForm.getRoles();
         Set<Role> roles = new HashSet<>();
-        strRoles.forEach(role -> {
-            switch (role) {
-                case "admin":
-                    Role adminRole = roleService.findByName(RoleName.ADMIN).orElseThrow(
-                            () -> new RuntimeException("Role not found")
-                    );
-                    roles.add(adminRole);
-                    break;
-                default:
-                    Role userRole = roleService.findByName(RoleName.USER).orElseThrow(() -> new RuntimeException("Role not found"));
-                    roles.add(userRole);
-            }
-        });
+        if(strRoles != null) {
+            strRoles.forEach(role -> {
+                switch (role) {
+                    case "admin":
+                        Role adminRole = roleService.findByName(RoleName.ADMIN).orElseThrow(
+                                () -> new RuntimeException("Role not found")
+                        );
+                        roles.add(adminRole);
+                        break;
+                    default:
+                        Role userRole = roleService.findByName(RoleName.USER).orElseThrow(() -> new RuntimeException("Role not found"));
+                        roles.add(userRole);
+                        break;
+                }
+            });
+        } else {
+            Role userRole = roleService.findByName(RoleName.USER).orElseThrow(() -> new RuntimeException("Role not found"));
+            roles.add(userRole);
+        }
         user.setRoles(roles);
         userService.save(user);
         return new ResponseEntity<>(new ResponMessage("yes"), HttpStatus.OK);
@@ -82,8 +89,12 @@ public class AuthController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String token = jwtProvider.createToken(authentication);
         UserPrinciple userPrinciple = (UserPrinciple) authentication.getPrincipal();
+
         return ResponseEntity.ok(new JwtResponse( userPrinciple.getId(),token, userPrinciple.getUsername(), userPrinciple.getAuthorities()));
     }
+
+
+
 
 
 }
