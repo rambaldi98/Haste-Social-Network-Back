@@ -1,6 +1,7 @@
 package com.example.backback.controller;
 
 import com.example.backback.domain.entity.User;
+import com.example.backback.dto.request.ChangeInformationForm;
 import com.example.backback.dto.request.SignInForm;
 import com.example.backback.dto.response.ResponMessage;
 import com.example.backback.security.jwt.JwtProvider;
@@ -64,5 +65,24 @@ public class UserController {
             return new ResponseEntity<>(new ResponMessage("user valid"), HttpStatus.OK);
         }
 //        return new ResponseEntity<>(new ResponMessage("not fount user"), HttpStatus.OK);
+    }
+
+    @PostMapping("/change/infor")
+    public  ResponseEntity<?> changeInfor(@Valid @RequestBody ChangeInformationForm informationForm){
+        UserPrinciple userPrinciple = (UserPrinciple) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        // lay user hien tai ra
+        User user = userService.findByUsername(userPrinciple.getUsername()).get();
+
+//        Optional<User> user = userService.findByUsername(userPrinciple.getUsername());
+
+        user.setPhone(informationForm.getPhone());
+        user.setBirthday(informationForm.getBirthday());
+        user.setCity(informationForm.getCity());
+        user.setImage(informationForm.getImage());
+
+        userService.save(user);
+
+        return new ResponseEntity<>(user,HttpStatus.OK);
     }
 }

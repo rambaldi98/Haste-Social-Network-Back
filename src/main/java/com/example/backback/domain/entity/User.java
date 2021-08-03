@@ -78,6 +78,18 @@ public class User {
         this.roles = roles;
     }
 
+    public User(Long id, String username, String password,String email, String phone, String birthday, String city,  String image) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.phone = phone;
+        this.birthday = birthday;
+        this.city = city;
+        this.image = image;
+    }
+
+
     public User(@NotBlank
                 @Size(min = 3, max = 50)String username,
                 @NotBlank
@@ -174,5 +186,20 @@ public class User {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                ", phone='" + phone + '\'' +
+                ", birthday='" + birthday + '\'' +
+                ", city='" + city + '\'' +
+                ", image='" + image + '\'' +
+                ", roles=" + roles +
+                '}';
     }
 }
