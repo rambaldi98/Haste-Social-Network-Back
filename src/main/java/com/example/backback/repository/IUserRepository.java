@@ -17,4 +17,5 @@ public interface IUserRepository extends JpaRepository<User, Long> {
 
     //xem info nguoi khac theo id
 //    @Query()
+//    Optional<User> findById(Long id);
 }

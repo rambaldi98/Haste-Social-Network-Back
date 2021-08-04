@@ -90,6 +90,7 @@ public class UserController {
     //xem info cua nguoi khac
     @GetMapping("/{id}")
     public ResponseEntity<Optional<User>> viewInfo(@PathVariable Long id){
+
         return new  ResponseEntity<>(userService.viewInfo(id), HttpStatus.OK);
 
     }

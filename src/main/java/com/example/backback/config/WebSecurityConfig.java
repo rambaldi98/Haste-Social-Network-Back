@@ -49,7 +49,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 authorizeRequests()
                 .antMatchers("/api/auth/**").permitAll()
                 .antMatchers("/api/admin/**").hasAnyAuthority("ADMIN")
-                .antMatchers("/api/user/**").hasAnyAuthority("USER")
+                .antMatchers("/api/user/**").hasAnyAuthority("USER","ADMIN")
                 .anyRequest().authenticated()
                 .and().exceptionHandling()
                 .authenticationEntryPoint(jwtEntryPoint)
