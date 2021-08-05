@@ -43,13 +43,13 @@ public class AuthController {
     @PostMapping("/signup")
     public ResponseEntity<?> register(@Valid @RequestBody SignUpForm signUpForm) {
         if (userService.existsByUsername(signUpForm.getUsername())) {
-            return new ResponseEntity<>(new ResponMessage("User is exist"), HttpStatus.OK);
+            return ResponseEntity.badRequest().body(new ResponMessage("Username is exist"));
         }
         if (userService.existsByEmail(signUpForm.getEmail())) {
-            return new ResponseEntity<>(new ResponMessage("Email is exist"), HttpStatus.OK);
+            return ResponseEntity.badRequest().body(new ResponMessage("Email is exist"));
         }
         if (userService.existsByPhone(signUpForm.getPhone())) {
-            return new ResponseEntity<>(new ResponMessage("Phone is exist"), HttpStatus.OK);
+            return ResponseEntity.badRequest().body(new ResponMessage("Phone is exist"));
         }
 
 
