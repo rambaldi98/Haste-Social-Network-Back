@@ -5,6 +5,7 @@ import com.example.backback.dto.request.ChangeInformationForm;
 import com.example.backback.dto.request.SignInForm;
 import com.example.backback.dto.response.ResponMessage;
 import com.example.backback.security.jwt.JwtProvider;
+import com.example.backback.security.userprincal.UserDetailService;
 import com.example.backback.security.userprincal.UserPrinciple;
 import com.example.backback.service.impl.RoleServiceImpl;
 import com.example.backback.service.impl.UserServiceImpl;
@@ -34,6 +35,8 @@ public class UserController {
     AuthenticationManager authenticationManager;
     @Autowired
     JwtProvider jwtProvider;
+    @Autowired
+    UserDetailService userDetailService;
 
     @GetMapping("")
     public ResponseEntity<?> test(){
@@ -84,5 +87,11 @@ public class UserController {
         userService.save(user);
 
         return new ResponseEntity<>(user,HttpStatus.OK);
+    }
+    @GetMapping("/getuser")
+    public ResponseEntity<User> getUser(){
+        User userCurrent = userDetailService.getCurrentUser();
+        System.out.println(userCurrent);
+        return  new ResponseEntity<>(userCurrent,HttpStatus.OK);
     }
 }
