@@ -1,5 +1,6 @@
 package com.example.backback.controller;
 
+import com.example.backback.domain.entity.Password;
 import com.example.backback.domain.entity.User;
 import com.example.backback.dto.request.ChangeInformationForm;
 import com.example.backback.dto.request.SignInForm;
@@ -44,30 +45,20 @@ public class UserController {
     }
 
     @PostMapping("/change/password")
-    public  ResponseEntity<?> change(@Valid @RequestBody SignInForm signInForm) {
-//        if()
-//        SecurityContextHolder.getContext().getAuthentication().getPrincipal()
-
-        UserPrinciple userPrinciple = (UserPrinciple) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//        System.out.println(userPrinciple + signInForm.getUsername());
-        // tim kiem user trong data base
-
-        if(signInForm.getPassword().length() < 6 | signInForm.getPassword().length() >32)
-            return new ResponseEntity<>(new ResponMessage("password valid"), HttpStatus.BAD_REQUEST);
-        if(signInForm.getUsername().equals(userPrinciple.getUsername()))
-        {
-//            return ResponseEntity.ok("co the doi mat khau");
-            Optional<User> user = userService.findByUsername(signInForm.getUsername());
-            user.get().setPassword(passwordEncoder.encode(signInForm.getPassword()));
-            userService.save(user.get());
-//            System.out.println(jwtProvider);
-//          jwtProvider.createToken(authenticationManager.authenticate(SecurityContextHolder.getContext().getAuthentication()));
-//            System.out.println(token);
-            return  new ResponseEntity<> ( new ResponMessage("change password success"),HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(new ResponMessage("user valid"), HttpStatus.OK);
+    public ResponseEntity<ResponMessage> changPassword(@RequestBody Password password){
+        User userCurrent = userDetailService.getCurrentUser();
+        String message;
+        if(userService.checkPassword(userCurrent, password.getCurrentPassword())){
+            userCurrent.setPassword(passwordEncoder.encode(password.getNewPassword()));
+            userService.save(userCurrent);
+            message = "CHANGE PASSWORD SUCCESSFULLY !";
+            return new ResponseEntity<>(new ResponMessage(message), HttpStatus.OK);
+        }else {
+            message = "CHANGE PASSWORD FAILED";
         }
-//        return new ResponseEntity<>(new ResponMessage("not fount user"), HttpStatus.OK);
+        return ResponseEntity
+                .badRequest()
+                .body(new ResponMessage(message));
     }
 
     @PostMapping("/change/infor")

@@ -5,6 +5,7 @@ import com.example.backback.domain.entity.User;
 import com.example.backback.repository.IUserRepository;
 import com.example.backback.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -13,6 +14,9 @@ import java.util.Optional;
 public class UserServiceImpl implements IUserService {
     @Autowired
     IUserRepository userRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @Override
     public Optional<User> findByUsername(String name) {
         return userRepository.findByUsername(name);
@@ -43,5 +47,8 @@ public class UserServiceImpl implements IUserService {
         return userRepository.findById(id);
     }
 
-
+    @Override
+    public boolean checkPassword(User user, String password) {
+        return passwordEncoder.matches(password, user.getPassword());
+    }
 }
