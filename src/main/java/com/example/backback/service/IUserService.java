@@ -13,4 +13,5 @@ public interface IUserService {
     Boolean existsByPhone(String phone);
     User save(User user);
     Optional<User> viewInfo(Long id);//xem info cua nguoi dung cu the
+    Optional<User> getCurrentUser();
 }
