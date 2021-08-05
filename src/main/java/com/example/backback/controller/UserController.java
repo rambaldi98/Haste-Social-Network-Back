@@ -37,10 +37,7 @@ public class UserController {
     JwtProvider jwtProvider;
     @Autowired
     UserDetailService userDetailService;
-<<<<<<< HEAD
-=======
 
->>>>>>> 42dcf6f08f01f5aeba6bd5b217d07d2806d38847
     @GetMapping("")
     public ResponseEntity<?> test(){
         return ResponseEntity.ok("hello user" );

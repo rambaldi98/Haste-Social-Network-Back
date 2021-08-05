@@ -13,10 +13,7 @@ public interface IUserService {
     Boolean existsByEmail(String email); //email da co trong DB chua
     Boolean existsByPhone(String phone);
     User save(User user);
-<<<<<<< HEAD
 
-    UserPrinciple getCurrentUser();
-=======
     Optional<User> viewInfo(Long id);//xem info cua nguoi dung cu the
->>>>>>> 42dcf6f08f01f5aeba6bd5b217d07d2806d38847
+
 }

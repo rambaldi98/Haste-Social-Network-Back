@@ -85,7 +85,6 @@ public class AuthController {
         UserPrinciple userPrinciple = (UserPrinciple) authentication.getPrincipal();
         return ResponseEntity.ok(new JwtResponse( userPrinciple.getId(),token, userPrinciple.getUsername(), userPrinciple.getAuthorities()));
     }
-<<<<<<< HEAD
 
     @GetMapping("/getuser")
     public ResponseEntity<User> getUser(){
@@ -95,6 +94,5 @@ public class AuthController {
         return  new ResponseEntity<>(userCurrent,HttpStatus.OK);
     }
 
-=======
->>>>>>> 42dcf6f08f01f5aeba6bd5b217d07d2806d38847
+
 }
