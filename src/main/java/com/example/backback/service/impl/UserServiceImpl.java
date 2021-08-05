@@ -3,6 +3,7 @@ package com.example.backback.service.impl;
 
 import com.example.backback.domain.entity.User;
 import com.example.backback.repository.IUserRepository;
+import com.example.backback.security.userprincal.UserPrinciple;
 import com.example.backback.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;

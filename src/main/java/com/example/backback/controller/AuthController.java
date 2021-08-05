@@ -8,6 +8,7 @@ import com.example.backback.dto.request.SignUpForm;
 import com.example.backback.dto.response.JwtResponse;
 import com.example.backback.dto.response.ResponMessage;
 import com.example.backback.security.jwt.JwtProvider;
+import com.example.backback.security.userprincal.UserDetailService;
 import com.example.backback.security.userprincal.UserPrinciple;
 import com.example.backback.service.impl.RoleServiceImpl;
 import com.example.backback.service.impl.UserServiceImpl;
@@ -39,6 +40,8 @@ public class AuthController {
     AuthenticationManager authenticationManager;
     @Autowired
     JwtProvider jwtProvider;
+    @Autowired
+    UserDetailService userDetailService;
 
     @PostMapping("/signup")
     public ResponseEntity<?> register(@Valid @RequestBody SignUpForm signUpForm) {
@@ -82,4 +85,14 @@ public class AuthController {
         UserPrinciple userPrinciple = (UserPrinciple) authentication.getPrincipal();
         return ResponseEntity.ok(new JwtResponse( userPrinciple.getId(),token, userPrinciple.getUsername(), userPrinciple.getAuthorities()));
     }
+
+    @GetMapping("/getuser")
+    public ResponseEntity<User> getUser(){
+        User userCurrent = userDetailService.getCurrentUser();
+
+        System.out.println(userCurrent);
+        return  new ResponseEntity<>(userCurrent,HttpStatus.OK);
+    }
+
+
 }
