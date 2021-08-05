@@ -3,6 +3,7 @@ package com.example.backback.service;
 
 
 import com.example.backback.domain.entity.User;
+import com.example.backback.security.userprincal.UserPrinciple;
 
 import java.util.Optional;
 
@@ -12,4 +13,6 @@ public interface IUserService {
     Boolean existsByEmail(String email); //email da co trong DB chua
     Boolean existsByPhone(String phone);
     User save(User user);
+
+    UserPrinciple getCurrentUser();
 }

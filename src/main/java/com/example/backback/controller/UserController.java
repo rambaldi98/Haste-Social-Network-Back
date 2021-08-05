@@ -4,6 +4,7 @@ import com.example.backback.domain.entity.User;
 import com.example.backback.dto.request.SignInForm;
 import com.example.backback.dto.response.ResponMessage;
 import com.example.backback.security.jwt.JwtProvider;
+import com.example.backback.security.userprincal.UserDetailService;
 import com.example.backback.security.userprincal.UserPrinciple;
 import com.example.backback.service.impl.RoleServiceImpl;
 import com.example.backback.service.impl.UserServiceImpl;
@@ -33,7 +34,8 @@ public class UserController {
     AuthenticationManager authenticationManager;
     @Autowired
     JwtProvider jwtProvider;
-
+    @Autowired
+    UserDetailService userDetailService;
     @GetMapping("")
     public ResponseEntity<?> test(){
         return ResponseEntity.ok("hello user" );
