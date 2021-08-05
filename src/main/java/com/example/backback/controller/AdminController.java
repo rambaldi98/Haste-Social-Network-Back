@@ -1,6 +1,9 @@
 package com.example.backback.controller;
 
+import com.example.backback.domain.entity.Role;
+import com.example.backback.domain.entity.RoleName;
 import com.example.backback.domain.entity.User;
+import com.example.backback.dto.request.ChangeInformationForm;
 import com.example.backback.dto.request.SignInForm;
 import com.example.backback.dto.response.ResponMessage;
 import com.example.backback.security.jwt.JwtProvider;
@@ -12,13 +15,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 @RequestMapping("/api/admin")
 @RestController
@@ -46,7 +52,7 @@ public class AdminController {
     }
 
     @PostMapping("/change/password")
-    public  ResponseEntity<?> change(@Valid @RequestBody SignInForm signInForm) {
+    public  ResponseEntity<?> changePass(@Valid @RequestBody SignInForm signInForm) {
 //        if()
 //        SecurityContextHolder.getContext().getAuthentication().getPrincipal()
 
@@ -71,4 +77,48 @@ public class AdminController {
         }
 //        return new ResponseEntity<>(new ResponMessage("not fount user"), HttpStatus.OK);
     }
+
+    @PostMapping("/change/infor")
+    public  ResponseEntity<?> changeInfor(@Valid @RequestBody ChangeInformationForm informationForm){
+        UserPrinciple userPrinciple = (UserPrinciple) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        // lay user hien tai ra
+        User user = userService.findByUsername(userPrinciple.getUsername()).get();
+
+//        Optional<User> user = userService.findByUsername(userPrinciple.getUsername());
+
+        user.setPhone(informationForm.getPhone());
+        user.setBirthday(informationForm.getBirthday());
+        user.setCity(informationForm.getCity());
+        user.setImage(informationForm.getImage());
+
+//        System.out.println(user);
+//
+//                User user = new User(
+//                        userPrinciple.getId(),
+//                        userPrinciple.getUsername(),
+//                        userPrinciple.getPassword(),
+//                        informationForm.getEmail(),
+//                        informationForm.getPhone(),
+//                        informationForm.getBirthday(),
+//                        informationForm.getCity(),
+//                        informationForm.getImage()
+//                );
+//                 String roles = String.valueOf(userPrinciple.getRoles());
+//        System.out.println(roles);
+
+//                 Role role  = userPrinciple.getRoles();
+//        System.out.println(userPrinciple.getRoles());
+//                Role role = (Role) userPrinciple.getRoles();
+//        System.out.println(role);
+//        System.out.println(roles);
+//                user.setRoles(roles);
+//        System.out.println(userPrinciple.getRoles());
+//                user.setRoles((Set<Role>) userPrinciple.getRoles());
+
+                userService.save(user);
+
+        return new ResponseEntity<>(user,HttpStatus.OK);
+    }
+
 }

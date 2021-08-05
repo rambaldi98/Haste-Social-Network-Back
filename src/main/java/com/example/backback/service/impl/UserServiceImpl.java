@@ -42,8 +42,15 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
+<<<<<<< HEAD
     public UserPrinciple getCurrentUser() {
       return (UserPrinciple) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+=======
+    public Optional<User> viewInfo(Long id) {
+        return userRepository.findById(id);
+    }
+
+>>>>>>> 42dcf6f08f01f5aeba6bd5b217d07d2806d38847
 
     }
 }

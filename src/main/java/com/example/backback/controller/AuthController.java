@@ -13,7 +13,6 @@ import com.example.backback.security.userprincal.UserPrinciple;
 import com.example.backback.service.impl.RoleServiceImpl;
 import com.example.backback.service.impl.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -64,31 +63,18 @@ public class AuthController {
                 signUpForm.getPhone(),
                 signUpForm.getBirthday(),
                 signUpForm.getCity());
-                Set<String> strRoles = signUpForm.getRoles();
+
         Set<Role> roles = new HashSet<>();
-        if(strRoles != null) {
-            strRoles.forEach(role -> {
-                switch (role) {
-                    case "admin":
-                        Role adminRole = roleService.findByName(RoleName.ADMIN).orElseThrow(
-                                () -> new RuntimeException("Role not found")
-                        );
-                        roles.add(adminRole);
-                        break;
-//                    default:
-//                        Role userRole = roleService.findByName(RoleName.USER).orElseThrow(() -> new RuntimeException("Role not found"));
-//                        roles.add(userRole);
-//                        break;
-                }
-            });
-        } else {
-            Role userRole = roleService.findByName(RoleName.USER).orElseThrow(() -> new RuntimeException("Role not found"));
-            roles.add(userRole);
-        }
+
+        Role roleUser = new Role();
+                    roleUser.setId(2L);
+                    roleUser.setName(RoleName.USER);
+                    roles.add(roleUser);
         user.setRoles(roles);
         userService.save(user);
         return new ResponseEntity<>(new ResponMessage("yes"), HttpStatus.OK);
     }
+
 
     @PostMapping("/signin")
     public ResponseEntity<?> login(@Valid @RequestBody SignInForm signInForm) {
@@ -97,9 +83,9 @@ public class AuthController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String token = jwtProvider.createToken(authentication);
         UserPrinciple userPrinciple = (UserPrinciple) authentication.getPrincipal();
-
         return ResponseEntity.ok(new JwtResponse( userPrinciple.getId(),token, userPrinciple.getUsername(), userPrinciple.getAuthorities()));
     }
+<<<<<<< HEAD
 
     @GetMapping("/getuser")
     public ResponseEntity<User> getUser(){
@@ -109,4 +95,6 @@ public class AuthController {
         return  new ResponseEntity<>(userCurrent,HttpStatus.OK);
     }
 
+=======
+>>>>>>> 42dcf6f08f01f5aeba6bd5b217d07d2806d38847
 }
