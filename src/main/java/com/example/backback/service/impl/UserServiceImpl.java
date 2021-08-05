@@ -38,5 +38,10 @@ public class UserServiceImpl implements IUserService {
         return userRepository.save(user);
     }
 
+    @Override
+    public Optional<User> viewInfo(Long id) {
+        return userRepository.findById(id);
+    }
+
 
 }

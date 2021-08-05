@@ -12,4 +12,5 @@ public interface IUserService {
     Boolean existsByEmail(String email); //email da co trong DB chua
     Boolean existsByPhone(String phone);
     User save(User user);
+    Optional<User> viewInfo(Long id);//xem info cua nguoi dung cu the
 }
