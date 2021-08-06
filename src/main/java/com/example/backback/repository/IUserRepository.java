@@ -14,7 +14,7 @@ public interface IUserRepository extends JpaRepository<User, Long> {
     Boolean existsByUsername(String username); //username da co trong DB chua, khi tao du lieu
     Boolean existsByEmail(String email); //email da co trong DB chua
     Boolean existsByPhone(String phone);
-
+//    User findByUsername(String name);
     //xem info nguoi khac theo id
 //    @Query()
 }

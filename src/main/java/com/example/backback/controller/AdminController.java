@@ -73,7 +73,7 @@ public class AdminController {
 //            System.out.println(token);
             return  new ResponseEntity<> ( new ResponMessage("change password success"),HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(new ResponMessage("user valid"), HttpStatus.OK);
+            return new ResponseEntity<>(new ResponMessage("user valid"), HttpStatus.BAD_REQUEST);
         }
 //        return new ResponseEntity<>(new ResponMessage("not fount user"), HttpStatus.OK);
     }
