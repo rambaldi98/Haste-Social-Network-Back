@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PostServiceImpl implements IPostService {
@@ -36,5 +37,10 @@ public class PostServiceImpl implements IPostService {
     @Override
     public String getUsernameById(Long id) {
         return postRepository.findUsernameById(id);
+    }
+
+    @Override
+    public Optional<Post> findById(Long id) {
+        return postRepository.findById(id);
     }
 }
