@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RequestMapping("/api/friend")
@@ -24,6 +25,7 @@ public class FriendShipController {
     UserDetailService userDetailService;
     @Autowired
     UserServiceImpl userService;
+
     @PostMapping("/addFriend")
 
     public ResponseEntity<?> addFriend(@RequestBody FriendRequestForm requestForm) {
@@ -42,6 +44,7 @@ public class FriendShipController {
         Friend friend = new Friend(userOne,usern);
 
         return new ResponseEntity<>(friendshipService.save(friend),HttpStatus.OK);
+
     }
 
 
@@ -73,6 +76,7 @@ public class FriendShipController {
     @PostMapping("/cancel/{id}")
     public ResponseEntity<?> cancelFriend(@PathVariable("id") Long id){
         // lay ve frend
+
         Optional<Friend> friend = friendshipService.findById(id);
         if(!friend.isPresent()) return new ResponseEntity<>(new ResponMessage("not find"), HttpStatus.BAD_REQUEST);
 
@@ -100,6 +104,7 @@ public class FriendShipController {
     @PostMapping("/block/{id}")
     public ResponseEntity<?> blockFriend(@PathVariable("id") Long id){
         // lay ve frend
+
         Optional<Friend> friend = friendshipService.findById(id);
         if(!friend.isPresent()) return new ResponseEntity<>(new ResponMessage("not find"), HttpStatus.BAD_REQUEST);
 
@@ -118,4 +123,27 @@ public class FriendShipController {
         }
         return new ResponseEntity<>(new ResponMessage("khong the chan ban "),HttpStatus.BAD_REQUEST);
     }
+
+    // lay ra danh sach ban be
+//    List a = (List) friendshipService.findAllFriendByStatus(4L,1);
+    @GetMapping("/list")
+    public ResponseEntity<?> getFriend(){
+        // lay user hien tai ra
+
+        User currentUser = userDetailService.getCurrentUser();
+        // lay ra danh sach ban
+//            List a = (List) friendshipService.findAllFriendByStatus(currentUser.getId(),1);
+        return new ResponseEntity<>(friendshipService.findAllFriendByStatus(currentUser.getId(),1),HttpStatus.OK);
+
+    }
+    @GetMapping("/listAccept")
+    public ResponseEntity<?> getFriendAccept(){
+        // lay user hien tai ra
+
+        User currentUser = userDetailService.getCurrentUser();
+        // lay ra danh sach ban
+//            List a = (List) friendshipService.findAllFriendByStatus(currentUser.getId(),1);
+        return new ResponseEntity<>(friendshipService.findAllFriendByStatus(currentUser.getId(),0),HttpStatus.OK);
+    }
+    // lay ra danh sach can accept
 }
