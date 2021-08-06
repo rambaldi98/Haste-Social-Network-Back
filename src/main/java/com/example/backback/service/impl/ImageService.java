@@ -1,7 +1,9 @@
 package com.example.backback.service.impl;
 
 import com.example.backback.domain.entity.Image;
+import com.example.backback.domain.entity.User;
 import com.example.backback.repository.ImageRepository;
+import com.example.backback.security.userprincal.UserDetailService;
 import com.example.backback.service.IImageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -15,6 +17,9 @@ public class ImageService implements IImageService {
 
     @Autowired
     ImageRepository imageRepository;
+
+    @Autowired
+    UserDetailService userDetailService;
 
     @Override
     public Page<Image> findAll(Pageable pageable) {
@@ -36,6 +41,12 @@ public class ImageService implements IImageService {
         imageRepository.deleteById(id);
     }
 
+    //    @Override
+//    public Image save(Image image) {
+//        User user = userDetailService.getCurrentUser();
+//        image.setUser(user);
+//        return imageRepository.save(image);
+//    }
     @Override
     public Image save(Image image) {
         return imageRepository.save(image);

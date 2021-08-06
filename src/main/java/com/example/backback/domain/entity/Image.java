@@ -1,13 +1,14 @@
 package com.example.backback.domain.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Entity
 @Table
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class Image {
@@ -15,7 +16,10 @@ public class Image {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String url;
+    private String imageUrl;
+
+//    @ManyToOne
+//    User user;
 
 
     public Long getId() {
@@ -26,12 +30,12 @@ public class Image {
         this.id = id;
     }
 
-    public String getUrl() {
-        return url;
+    public String getImageUrl() {
+        return imageUrl;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
+    public void setImageUrl(String url) {
+        this.imageUrl = url;
     }
 
 }

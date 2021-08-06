@@ -1,9 +1,7 @@
 package com.example.backback.controller;
 
 import com.example.backback.domain.entity.Image;
-import com.example.backback.dto.request.UpdateAvatarRequest;
 import com.example.backback.service.IImageService;
-import com.example.backback.service.impl.ImageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
