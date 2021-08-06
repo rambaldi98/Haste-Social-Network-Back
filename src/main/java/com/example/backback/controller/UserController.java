@@ -44,7 +44,7 @@ public class UserController {
         return ResponseEntity.ok("hello user" );
     }
 
-    @PostMapping("/change/password")
+        @PostMapping("/change/password")
     public ResponseEntity<ResponMessage> changPassword(@RequestBody Password password){
         User userCurrent = userDetailService.getCurrentUser();
         String message;

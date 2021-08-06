@@ -1,51 +1,32 @@
-package com.example.backback.domain.entity.post;
+package com.example.backback.mapper;
 
-import com.example.backback.domain.entity.User;
-import com.sun.istack.Nullable;
-import lombok.EqualsAndHashCode;
+import com.example.backback.domain.entity.post.Like;
+import com.example.backback.domain.entity.post.Post;
+import com.example.backback.dto.request.PostCreate;
 
-import javax.persistence.*;
 import java.time.Instant;
 import java.util.Collection;
 
-
-
-@Entity
-@Table(name = "post")
-public class Post {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
+public class PostMapper {
     private Long id;
-
-    @Nullable
-    @Lob
     private String description;
-
-    private Integer status = 2;// private = 0,1 ,2
+    private Integer status;
     private String image;
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "userId")
-    private User user;
-
-
     private Instant createDate;
-
-
-
-    @ManyToMany(mappedBy = "post")
-    @EqualsAndHashCode.Exclude
-    private Collection<Like> like;
-
-    public Post() {
-    }
-
-    public Post(String description, Integer status, String image, Instant createDate) {
+    private Like like;
+    public PostMapper(String description, Integer status, String image, Instant createDate) {
         this.description = description;
         this.status = status;
         this.image = image;
         this.createDate = createDate;
+    }
+
+    public PostMapper(String description, Integer status, String image, Instant createDate, Like like) {
+        this.description = description;
+        this.status = status;
+        this.image = image;
+        this.createDate = createDate;
+        this.like = like;
     }
 
     public Long getId() {
@@ -80,14 +61,6 @@ public class Post {
         this.image = image;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
     public Instant getCreateDate() {
         return createDate;
     }
@@ -96,11 +69,20 @@ public class Post {
         this.createDate = createDate;
     }
 
-    public Collection<Like> getLike() {
+    public Like getLike() {
         return like;
     }
 
-    public void setLike(Collection<Like> like) {
+    public void setLike(Like like) {
         this.like = like;
+    }
+
+    public static Post build(PostCreate postCreate){
+
+    return new Post(
+        postCreate.getDescription(),
+            postCreate.getStatus(),
+            postCreate.getImage(),
+            Instant.now());
     }
 }
