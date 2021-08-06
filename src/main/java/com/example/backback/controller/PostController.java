@@ -15,6 +15,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.Optional;
+
 @RequestMapping("/api/post")
 @RestController
 @CrossOrigin(origins = "*")
@@ -25,6 +28,8 @@ public class PostController {
     LikeServiceImpl likeService;
     @Autowired
     UserDetailService userDetailService;
+    @Autowired
+    UserServiceImpl userService;
     @PostMapping("/create")
     public ResponseEntity<?> createPost(@RequestBody PostCreate postCreate){
         Post post = PostMapper.build(postCreate);
@@ -39,11 +44,28 @@ public class PostController {
 
         return new ResponseEntity<>(postService.findAll(), HttpStatus.OK);
     }
-
+    // lay 1 list user
     @GetMapping("/getpost/{user}")
-    public ResponseEntity<?> getPost(){
+    public ResponseEntity<?> getPostByUsername(@PathVariable String user){
+        // lay ra user
+        Optional<User> userPost = userService.findByUsername(user);
+        // tim trong sv
+        List a =  postService.findByUser(userPost.get());
 
-        return new ResponseEntity<>(postService.findAll(), HttpStatus.OK);
+        return new ResponseEntity<>(a, HttpStatus.OK);
     }
+    // xoa post phai trung vs user hien tai
+    @PostMapping("/remove/{id}")
+    public ResponseEntity<?> deletePost(@PathVariable Long id) {
+
+        if(userDetailService.getCurrentUser().getUsername().equals( postService.getUsernameById(id) )){
+            postService.remove(id);
+            return new ResponseEntity<>(new ResponMessage("delete done"),HttpStatus.OK);
+        }
+        return new ResponseEntity<>(new ResponMessage("not delete"), HttpStatus.BAD_REQUEST);
+
+    }
+
+
 
 }

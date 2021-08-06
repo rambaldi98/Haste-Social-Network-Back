@@ -1,5 +1,6 @@
 package com.example.backback.service.impl;
 
+import com.example.backback.domain.entity.User;
 import com.example.backback.domain.entity.post.Post;
 import com.example.backback.repository.IPostRepository;
 import com.example.backback.service.IPostService;
@@ -20,5 +21,20 @@ public class PostServiceImpl implements IPostService {
     @Override
     public List<Post> findAll() {
         return postRepository.findAll();
+    }
+
+    @Override
+    public List<Post> findByUser(User user) {
+        return (List<Post>) postRepository.findAllByUser(user);
+    }
+
+    @Override
+    public void remove(Long id) {
+        postRepository.deleteById(id);
+    }
+
+    @Override
+    public String getUsernameById(Long id) {
+        return postRepository.findUsernameById(id);
     }
 }
