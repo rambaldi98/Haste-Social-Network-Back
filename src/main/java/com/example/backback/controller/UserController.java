@@ -52,8 +52,10 @@ public class UserController {
             userCurrent.setPassword(passwordEncoder.encode(password.getNewPassword()));
             userService.save(userCurrent);
             message = "CHANGE PASSWORD SUCCESSFULLY !";
+            System.out.println(password.getNewPassword());
             return new ResponseEntity<>(new ResponMessage(message), HttpStatus.OK);
         }else {
+            System.out.println(password.getCurrentPassword());
             message = "CHANGE PASSWORD FAILED";
         }
         return ResponseEntity
