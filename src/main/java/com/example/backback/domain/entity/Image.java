@@ -18,6 +18,8 @@ public class Image {
 
     private String imageUrl;
 
+//    private int status;
+
 //    @ManyToOne
 //    User user;
 

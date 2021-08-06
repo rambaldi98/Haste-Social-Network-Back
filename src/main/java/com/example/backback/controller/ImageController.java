@@ -42,8 +42,10 @@ public class ImageController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-//    @PutMapping("/updateAvatar")
-//    private ResponseEntity<?> updateAvatar(@RequestBody Image image){
-//        return new ResponseEntity<>(HttpStatus.OK);
-//    }
+    @PutMapping("/updateImage/{id}")
+    private ResponseEntity<?> updateImage(@RequestBody Image image, @PathVariable Long id){
+        Optional<Image> image1 = imageService.findById(id);
+        imageService.save(image1.get());
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }

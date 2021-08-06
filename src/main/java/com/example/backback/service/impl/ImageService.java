@@ -41,14 +41,20 @@ public class ImageService implements IImageService {
         imageRepository.deleteById(id);
     }
 
-    //    @Override
-//    public Image save(Image image) {
-//        User user = userDetailService.getCurrentUser();
-//        image.setUser(user);
-//        return imageRepository.save(image);
-//    }
     @Override
     public Image save(Image image) {
+        User user = userDetailService.getCurrentUser();
+        user.setImage(image.getImageUrl());
         return imageRepository.save(image);
     }
+
+
+
+
+
+//    @Override
+//    public Image save(Image image) {
+//        return imageRepository.save(image);
+//    }
+//    }
 }
