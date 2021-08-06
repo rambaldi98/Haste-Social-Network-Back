@@ -44,7 +44,8 @@ public class PostController {
 
         return new ResponseEntity<>(postService.findAll(), HttpStatus.OK);
     }
-    // lay 1 list user
+
+    // lay 1 list psot theo user
     @GetMapping("/getpost/{user}")
     public ResponseEntity<?> getPostByUsername(@PathVariable String user){
         // lay ra user
@@ -66,6 +67,9 @@ public class PostController {
 
     }
 
+    // set role cho bai post
+//    @PutMapping("change/status/{status}")
+//    public ResponseEntity<?> changeStatus(@PathVariable)
 
 
 }
