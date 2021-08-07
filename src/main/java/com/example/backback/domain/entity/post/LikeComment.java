@@ -9,7 +9,8 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "like_comment")
-
+@Data
+@NoArgsConstructor
 public class LikeComment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,5 +25,8 @@ public class LikeComment {
     @JoinColumn(name = "comment_id")
     private CommentPost commentPost;
 
-
+    public LikeComment(User user, CommentPost commentPost) {
+        this.user = user;
+        this.commentPost = commentPost;
+    }
 }

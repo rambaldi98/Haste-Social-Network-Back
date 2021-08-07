@@ -8,10 +8,7 @@ import com.example.backback.dto.request.PostCreate;
 import com.example.backback.dto.response.ResponMessage;
 import com.example.backback.mapper.CommentMapper;
 import com.example.backback.security.userprincal.UserDetailService;
-import com.example.backback.service.impl.CommentPostServiceImpl;
-import com.example.backback.service.impl.FriendshipServiceImpl;
-import com.example.backback.service.impl.PostServiceImpl;
-import com.example.backback.service.impl.UserServiceImpl;
+import com.example.backback.service.impl.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,6 +30,8 @@ public class CommentController {
     UserServiceImpl userService;
     @Autowired
     PostServiceImpl postService;
+    @Autowired
+    LikeCommentServiceImpl likeCommentService;
     // tao comment theo id bai post
     @PostMapping("/create/{id}")
     public ResponseEntity<?> createComment(@PathVariable("id") Long id, @RequestBody CommentPostCreate commentPostCreate){
@@ -49,6 +48,9 @@ public class CommentController {
         commentPost.setUser(user);
         commentPost.setPost(post.get());
         commentPostService.save(commentPost);
+        post.get().setComment_count(post.get().getComment_count()+1);
+        postService.save(post.get());
+        // tang count
 
         return new ResponseEntity<>(new ResponMessage("create comment done"), HttpStatus.OK);
     }
@@ -82,6 +84,7 @@ public class CommentController {
 
     // xoa comment theo id cua comment
     // gom co chu post dc xoa va nguoi viet dc xoa
+    // xoa tat ca ban ghi ve like comment
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteComment(@PathVariable("id") Long id) {
 
@@ -98,20 +101,32 @@ public class CommentController {
         if( user.getUsername().equals(post.get().getUser().getUsername())
                 ||user.getUsername().equals(commentPost.get().getUser().getUsername())){
             // dung roi thi xoa
+
+            likeCommentService.deleteAllByCommentPost(commentPost.get());
             commentPostService.deleteById(id);
+
+
+            if(post.get().getLike_count() > 0)
+                post.get().setComment_count(post.get().getLike_count()-1);
+            else
+                post.get().setComment_count(0);
+            commentPostService.save(commentPost.get());
             return new ResponseEntity<>(new ResponMessage("delete comment done"),HttpStatus.OK);
         }
 
         return new ResponseEntity<>(new ResponMessage("khong co quyen xoa"),HttpStatus.FORBIDDEN);
     }
-    // get coment theo id post
-    // va theo theo user hien tai cua bai post
-    @GetMapping()
-    public ResponseEntity<?> getListComment(){
-        User user = userDetailService.getCurrentUser();
 
-        List listcomment = (List) commentPostService.getAllCommentByUser(user);
+    // lay list comment theo id bai post
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getListComment(@PathVariable Long id){
+        User user = userDetailService.getCurrentUser();
+        // get list post ra
+        Optional<Post> post = postService.findById(id);
+
+        List listcomment = (List) commentPostService.getAllCommentByPost(post.get());
         if(listcomment.isEmpty()) return new ResponseEntity<>(new ResponMessage("khong co bai post"), HttpStatus.BAD_REQUEST);
         return new ResponseEntity<>(listcomment,HttpStatus.OK);
     }
+
 }

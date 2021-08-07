@@ -27,7 +27,7 @@ public class CommentPost {
 
     private Instant createdDate;
     private Instant timeUpdate;
-
+    private Integer like_comment_count = 0;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "userId")
     private User user;

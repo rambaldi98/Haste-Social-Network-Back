@@ -23,6 +23,7 @@ public class Post {
     private String description;
 
     private Integer status =2;// private = 0,1 ,2 2 : public
+
     private String image;
 
     @ManyToOne(fetch = FetchType.EAGER)
@@ -32,7 +33,8 @@ public class Post {
 
     private Instant createDate; // thoi gian post sua update thoi gian
     private Instant timeUpdate; // thoi gian update lai bai viet
-
+    private Integer like_count = 0;
+    private Integer comment_count = 0;
 
 
     public Post() {
@@ -114,5 +116,21 @@ public class Post {
 
     public void setTimeUpdate(Instant timeUpdate) {
         this.timeUpdate = timeUpdate;
+    }
+
+    public Integer getLike_count() {
+        return like_count;
+    }
+
+    public void setLike_count(Integer like_count) {
+        this.like_count = like_count;
+    }
+
+    public Integer getComment_count() {
+        return comment_count;
+    }
+
+    public void setComment_count(Integer comment_count) {
+        this.comment_count = comment_count;
     }
 }

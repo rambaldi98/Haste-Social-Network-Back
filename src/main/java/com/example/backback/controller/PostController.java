@@ -1,15 +1,13 @@
 package com.example.backback.controller;
 
 import com.example.backback.domain.entity.User;
+import com.example.backback.domain.entity.post.CommentPost;
 import com.example.backback.domain.entity.post.Post;
 import com.example.backback.dto.request.PostCreate;
 import com.example.backback.dto.response.ResponMessage;
 import com.example.backback.mapper.PostMapper;
 import com.example.backback.security.userprincal.UserDetailService;
-import com.example.backback.service.impl.LikeServiceImpl;
-import com.example.backback.service.impl.PostServiceImpl;
-import com.example.backback.service.impl.RoleServiceImpl;
-import com.example.backback.service.impl.UserServiceImpl;
+import com.example.backback.service.impl.*;
 import javafx.geometry.Pos;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -32,6 +30,10 @@ public class PostController {
     UserDetailService userDetailService;
     @Autowired
     UserServiceImpl userService;
+    @Autowired
+    CommentPostServiceImpl commentPostService;
+    @Autowired
+    LikeCommentServiceImpl likeCommentService;
     @PostMapping("/create")
     public ResponseEntity<?> createPost(@RequestBody PostCreate postCreate){
 
@@ -121,22 +123,40 @@ public class PostController {
         return new ResponseEntity<>(postList, HttpStatus.OK);
     }
 
-    // xoa post theo id va  phai trung vs user hien tai // thieu xoa ca like va comment nua nen chua xong dc
+    // xoa post theo id va  phai trung vs user hien tai
+    // thieu xoa ca like va comment nua nen chua xong dc
+
+    // xoa like post
+    // xoa like comment
+    // xoa comment
     @DeleteMapping("/remove/{id}")
     public ResponseEntity<?> deletePost(@PathVariable Long id) {
 
         if(userDetailService.getCurrentUser() == null)
             return new ResponseEntity<>(new ResponMessage(" khong co quyen"), HttpStatus.FORBIDDEN);
-        if(!postService.findById(id).isPresent())
-            return new ResponseEntity<>(new ResponMessage("khong tim thay "),HttpStatus.BAD_REQUEST);
-        // kiem tra co phiar user dang bai hay k
+        Optional<Post> post = postService.findById(id);
+        if(!post.isPresent())
+            return new ResponseEntity<>(new ResponMessage("khong tim thay bai post"),HttpStatus.BAD_REQUEST);
+        // kiem tra co phai user dang bai hay k
         if(userDetailService.getCurrentUser().getUsername().equals( postService.getUsernameById(id) )){
-            // tim kiem xem co bai post k
+
+            likeService.deleteAllByPost(post.get());
+            // lay list comment
+            List comment = (List) commentPostService.getAllCommentByPost(post.get());
+            for ( Object commentPost : comment
+                 ) {
+                likeCommentService.deleteAllByCommentPost((CommentPost) commentPost);
+                commentPostService.delete((CommentPost) commentPost);
+            }
+            // xoa
+//            commentPostService.deleteAllByPost(post.get());
+
+
             postService.remove(id);
             return new ResponseEntity<>(new ResponMessage("delete done"),HttpStatus.OK);
         }
 
-        return new ResponseEntity<>(new ResponMessage("khong co gi"), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(new ResponMessage("khong co quyen"), HttpStatus.FORBIDDEN);
 
     }
 
