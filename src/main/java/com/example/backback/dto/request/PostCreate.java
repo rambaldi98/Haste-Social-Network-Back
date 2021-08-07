@@ -12,4 +12,5 @@ public class PostCreate {
     String image;
     Integer status;
 
+
 }

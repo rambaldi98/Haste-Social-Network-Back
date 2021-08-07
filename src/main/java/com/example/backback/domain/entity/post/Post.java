@@ -24,6 +24,15 @@ public class Post {
 
     private Integer status ;// private = 0,1 ,2 2 : public
     private String image;
+    private String mp3Url;
+
+    public String getMp3Url() {
+        return mp3Url;
+    }
+
+    public void setMp3Url(String mp3Url) {
+        this.mp3Url = mp3Url;
+    }
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "userId")

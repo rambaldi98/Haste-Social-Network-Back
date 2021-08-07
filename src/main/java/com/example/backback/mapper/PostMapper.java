@@ -5,26 +5,25 @@ import com.example.backback.domain.entity.post.Post;
 import com.example.backback.dto.request.PostCreate;
 
 import java.time.Instant;
-import java.util.Collection;
 
 public class PostMapper {
     private Long id;
     private String description;
     private Integer status;
-    private String image;
+    private String imageUrl;
     private Instant createDate;
     private Like like;
-    public PostMapper(String description, Integer status, String image, Instant createDate) {
+    public PostMapper(String description, Integer status, String imageUrl, Instant createDate) {
         this.description = description;
         this.status = status;
-        this.image = image;
+        this.imageUrl = imageUrl;
         this.createDate = createDate;
     }
 
-    public PostMapper(String description, Integer status, String image, Instant createDate, Like like) {
+    public PostMapper(String description, Integer status, String imageUrl, Instant createDate, Like like) {
         this.description = description;
         this.status = status;
-        this.image = image;
+        this.imageUrl = imageUrl;
         this.createDate = createDate;
         this.like = like;
     }
@@ -53,12 +52,12 @@ public class PostMapper {
         this.status = status;
     }
 
-    public String getImage() {
-        return image;
+    public String getImageUrl() {
+        return imageUrl;
     }
 
-    public void setImage(String image) {
-        this.image = image;
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     public Instant getCreateDate() {
