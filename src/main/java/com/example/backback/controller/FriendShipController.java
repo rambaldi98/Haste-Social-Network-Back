@@ -26,6 +26,7 @@ public class FriendShipController {
     @Autowired
     UserServiceImpl userService;
 
+
     @PostMapping("/addFriend")
 
     public ResponseEntity<?> addFriend(@RequestBody FriendRequestForm requestForm) {
@@ -35,13 +36,13 @@ public class FriendShipController {
 
         Optional<User> userTwo = userService.findByUsername(requestForm.getUsernametwo());
 
-        if(userTwo.isPresent()) return new ResponseEntity<>(new ResponMessage("not find user"), HttpStatus.BAD_REQUEST);
-        User usern = userTwo.get();
+        if(!userTwo.isPresent()) return new ResponseEntity<>(new ResponMessage("not find user"), HttpStatus.BAD_REQUEST);
+        User user = userTwo.get();
         // check xem 2 thang kia co la ban hay khong
-        Optional<Friend> friendCheck = friendshipService.findByUseroneAndAndUsertwo(userOne,usern);
+        Optional<Friend> friendCheck = friendshipService.findByUseroneAndAndUsertwo(userOne,user);
         if(friendCheck.isPresent()) return new ResponseEntity<>(new ResponMessage("not add friend"), HttpStatus.BAD_REQUEST);
         // ko phai tao moi
-        Friend friend = new Friend(userOne,usern);
+        Friend friend = new Friend(userOne,user);
 
         return new ResponseEntity<>(friendshipService.save(friend),HttpStatus.OK);
 
@@ -75,7 +76,7 @@ public class FriendShipController {
 
     @PostMapping("/cancel/{id}")
     public ResponseEntity<?> cancelFriend(@PathVariable("id") Long id){
-        // lay ve frend
+        // lay ve friend
 
         Optional<Friend> friend = friendshipService.findById(id);
         if(!friend.isPresent()) return new ResponseEntity<>(new ResponMessage("not find"), HttpStatus.BAD_REQUEST);
@@ -99,7 +100,7 @@ public class FriendShipController {
         return new ResponseEntity<>(new ResponMessage("khong the huy ket ban "),HttpStatus.BAD_REQUEST);
     }
 
-    // chanket ban
+    // chan ket ban
 
     @PostMapping("/block/{id}")
     public ResponseEntity<?> blockFriend(@PathVariable("id") Long id){
@@ -124,8 +125,6 @@ public class FriendShipController {
         return new ResponseEntity<>(new ResponMessage("khong the chan ban "),HttpStatus.BAD_REQUEST);
     }
 
-    // lay ra danh sach ban be
-//    List a = (List) friendshipService.findAllFriendByStatus(4L,1);
     @GetMapping("/list")
     public ResponseEntity<?> getFriend(){
         // lay user hien tai ra
@@ -143,7 +142,10 @@ public class FriendShipController {
         User currentUser = userDetailService.getCurrentUser();
         // lay ra danh sach ban
 //            List a = (List) friendshipService.findAllFriendByStatus(currentUser.getId(),1);
-        return new ResponseEntity<>(friendshipService.findAllFriendByStatus(currentUser.getId(),0),HttpStatus.OK);
+        return new ResponseEntity<>(friendshipService.findAllFriendByUserOneStatus(currentUser.getId(),0),HttpStatus.OK);
     }
     // lay ra danh sach can accept
+
+
+
 }

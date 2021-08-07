@@ -21,15 +21,17 @@ public class Like {
     @JoinColumn(name = "user_id")
     private User user;
 
-
+// 1 nnguoi like 1 lan
+    // one to many
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 
-    @EqualsAndHashCode.Exclude // không sử dụng trường này trong
-    @JoinTable(name = "like_post", //Tạo ra một join table
-            joinColumns = @JoinColumn(name = "like_id"),  // TRong đó, khóa ngoại chính là s_id trỏ tới class hiện tại (g)
-            inverseJoinColumns = @JoinColumn(name = "post_id") //Khóa ngoại thứ 2 trỏ tới thuộc tính ở dưới (posst)
-    )
+//    @EqualsAndHashCode.Exclude // không sử dụng trường này trong
+//    @JoinTable(name = "like_post", //Tạo ra một join table
+//            joinColumns = @JoinColumn(name = "like_id"),  // TRong đó, khóa ngoại chính là s_id trỏ tới class hiện tại (g)
+//            inverseJoinColumns = @JoinColumn(name = "post_id") //Khóa ngoại thứ 2 trỏ tới thuộc tính ở dưới (posst)
+//    )
+
     private Collection<Post> post;
 
 

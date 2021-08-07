@@ -16,4 +16,8 @@ public interface IFriendshipRepository extends JpaRepository<Friend, Long> {
     @Query(value = "select * from Friend " +
             "where ((userone_id = :user) or (usertwo_id = :user))and (status = :status) ", nativeQuery = true)
     Iterable<Friend> findAllFriendByStatus(@Param("user") Long user_id, @Param("status") Integer status);
+
+    @Query(value = "select * from Friend " +
+            "where (userone_id = :user)and (status = :status) ", nativeQuery = true)
+    Iterable<Friend> findAllFriendByByUserOneStatus(@Param("user") Long user_id, @Param("status") Integer status);
 }

@@ -88,4 +88,14 @@ public class UserController {
         return  new ResponseEntity<>(userCurrent,HttpStatus.OK);
     }
 
+    @GetMapping("/allUser")
+    public ResponseEntity<Iterable<User>> getAllUSer(){
+        return new ResponseEntity<>(userService.getAllUser(), HttpStatus.OK);
+    }
+
+    @GetMapping("/allUserNoStatus")
+    public ResponseEntity<Iterable<Object>> getAllUSerNoStatus(){
+        return new ResponseEntity<>(userService.getAllUserAndStatus(), HttpStatus.OK);
+    }
+
 }

@@ -24,5 +24,8 @@ public interface IFriendShipService {
     Optional<Friend> findByUseroneAndAndUsertwo(User userOne, User userTwo);
 
     Iterable<Friend> findAllFriendByStatus( Long user_id, Integer status);
+    Iterable<Friend> findAllFriendByUserOneStatus( Long user_id, Integer status);
+
+
 
 }

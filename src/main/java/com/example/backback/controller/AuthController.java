@@ -71,6 +71,7 @@ public class AuthController {
                     roleUser.setName(RoleName.USER);
                     roles.add(roleUser);
         user.setRoles(roles);
+        user.setImage("https://firebasestorage.googleapis.com/v0/b/casemodule6.appspot.com/o/mangxahoi.jpg?alt=media&token=d8c2260a-0dff-4659-a46c-a2c3fe9fbc8b");
         userService.save(user);
         return new ResponseEntity<>(new ResponMessage("yes"), HttpStatus.OK);
     }

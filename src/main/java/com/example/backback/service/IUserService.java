@@ -3,7 +3,6 @@ package com.example.backback.service;
 
 
 import com.example.backback.domain.entity.User;
-import com.example.backback.security.userprincal.UserPrinciple;
 
 import java.util.Optional;
 
@@ -15,4 +14,7 @@ public interface IUserService {
     User save(User user);
     Optional<User> viewInfo(Long id);//xem info cua nguoi dung cu the
     boolean checkPassword(User user, String password);
+    //lay ra list nguoi dung;
+    Iterable<User> getAllUser();
+    Iterable<Object> getAllUserAndStatus();
 }
