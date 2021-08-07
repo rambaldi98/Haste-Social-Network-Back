@@ -44,8 +44,7 @@ public class PostController {
 
         return new ResponseEntity<>(postService.findAll(), HttpStatus.OK);
     }
-
-    // lay 1 list psot theo user
+    // lay 1 list user
     @GetMapping("/getpost/{user}")
     public ResponseEntity<?> getPostByUsername(@PathVariable String user){
         // lay ra user
@@ -65,6 +64,11 @@ public class PostController {
         }
         return new ResponseEntity<>(new ResponMessage("not delete"), HttpStatus.BAD_REQUEST);
 
+    }
+
+    @GetMapping("getPost/{id}")
+    public ResponseEntity<Optional<Post>> getPostById(@PathVariable Long id){
+        return new ResponseEntity<>(postService.findById(id), HttpStatus.OK);
     }
 
     // set role cho bai post
