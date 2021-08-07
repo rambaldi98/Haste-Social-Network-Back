@@ -19,7 +19,7 @@ public class Friend {
     @ManyToOne(fetch = FetchType.EAGER)
     private User usertwo;
 
-    private int status; // 0 la chua ket ban , 1 la ket ban , 2 la chan
+    private int status; // 0zzzzz la chua ket ban , 1 la ket ban , 2 la chan
 
     public Friend(User userone, User usertwo) {
         this.userone = userone;

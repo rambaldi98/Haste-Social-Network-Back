@@ -55,7 +55,7 @@ public class PostController {
         return new ResponseEntity<>(a, HttpStatus.OK);
     }
     // xoa post phai trung vs user hien tai
-    @PostMapping("/remove/{id}")
+    @DeleteMapping("/remove/{id}")
     public ResponseEntity<?> deletePost(@PathVariable Long id) {
 
         if(userDetailService.getCurrentUser().getUsername().equals( postService.getUsernameById(id) )){
