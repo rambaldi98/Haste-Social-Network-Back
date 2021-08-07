@@ -22,7 +22,7 @@ public class Post {
     @Lob
     private String description;
 
-    private Integer status ;// private = 0,1 ,2 2 : public
+    private Integer status =2;// private = 0,1 ,2 2 : public
     private String image;
 
     @ManyToOne(fetch = FetchType.EAGER)
@@ -31,20 +31,32 @@ public class Post {
 
 
     private Instant createDate; // thoi gian post sua update thoi gian
+    private Instant timeUpdate; // thoi gian update lai bai viet
 
 
-
-    @ManyToMany(mappedBy = "post")
-    @EqualsAndHashCode.Exclude
-    private Collection<Like> like;
 
     public Post() {
     }
-
+    // post create
     public Post(String description, Integer status, String image, Instant createDate) {
         this.description = description;
         this.status = status;
         this.image = image;
+        this.createDate = createDate;
+    }
+    // update
+    public Post(String description, Integer status, String image,  Instant timeUpdate, String a) {
+        this.description = description;
+        this.status = status;
+        this.image = image;
+        this.timeUpdate = timeUpdate;
+    }
+
+    public Post(String description, Integer status, String image, User user, Instant createDate) {
+        this.description = description;
+        this.status = status;
+        this.image = image;
+        this.user = user;
         this.createDate = createDate;
     }
 
@@ -96,11 +108,11 @@ public class Post {
         this.createDate = createDate;
     }
 
-    public Collection<Like> getLike() {
-        return like;
+    public Instant getTimeUpdate() {
+        return timeUpdate;
     }
 
-    public void setLike(Collection<Like> like) {
-        this.like = like;
+    public void setTimeUpdate(Instant timeUpdate) {
+        this.timeUpdate = timeUpdate;
     }
 }

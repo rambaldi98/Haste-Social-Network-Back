@@ -10,9 +10,11 @@ import com.example.backback.service.impl.LikeServiceImpl;
 import com.example.backback.service.impl.PostServiceImpl;
 import com.example.backback.service.impl.RoleServiceImpl;
 import com.example.backback.service.impl.UserServiceImpl;
+import javafx.geometry.Pos;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -32,48 +34,110 @@ public class PostController {
     UserServiceImpl userService;
     @PostMapping("/create")
     public ResponseEntity<?> createPost(@RequestBody PostCreate postCreate){
+
         Post post = PostMapper.build(postCreate);
+        if(post == null) return new ResponseEntity<>(new ResponMessage("khong hop le"), HttpStatus.BAD_REQUEST);
         User currentUser =   userDetailService.getCurrentUser();
+        if(currentUser == null) return new ResponseEntity<>(new ResponMessage("khong co quyen"),HttpStatus.ACCEPTED);
         post.setUser(currentUser);
         postService.save(post);
         return new ResponseEntity(new ResponMessage("create post done"), HttpStatus.OK);
     }
-
+    // ham nay cho admin dung .
     @GetMapping("/getAllpost")
     public ResponseEntity<?> getAllPost(){
 
         return new ResponseEntity<>(postService.findAll(), HttpStatus.OK);
     }
-    // lay 1 list user
+
+    // lay tat ca post cua user hien tai ///
+    @GetMapping("/getpost")
+    public ResponseEntity<?> getPostByUsername(){
+        // lay ra user hien tai
+      User userPost = userDetailService.getCurrentUser();
+
+        // tim trong sv
+        List postList =  postService.findByUser(userPost);
+        if(postList.isEmpty())
+            return new ResponseEntity<>(new ResponMessage("khong co bai post nao"),HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(postList, HttpStatus.OK);
+    }
+
+
+
+
+    // lay psot theo id so sai
+    @GetMapping("getPost/{id}")
+    public ResponseEntity<?> getPostById(@PathVariable Long id){
+        Optional<Post> post = postService.findById(id);
+        if(!post.isPresent())
+            return new ResponseEntity<>(new ResponMessage("khong tim thay bai post"),HttpStatus.BAD_REQUEST);
+
+        return new ResponseEntity<>(post, HttpStatus.OK);
+    }
+
+    // sua bai post theo id va nguoi dung
+    @PutMapping("/update/{id}")
+    public ResponseEntity<?> updatePostById(@PathVariable Long id, @RequestBody PostCreate postCreate){
+        // kiem tra user hien tai
+        User user =  userDetailService.getCurrentUser();
+        if(user == null)
+            return new ResponseEntity<>(new ResponMessage(" khong co quyen"), HttpStatus.FORBIDDEN);
+        // tim kiem bai viet
+        Optional<Post> post =  postService.findById(id);
+        if(!post.isPresent())
+            return new ResponseEntity<>(new ResponMessage("khong tim thay bai post"),HttpStatus.BAD_REQUEST);
+        // kiem tra user hien tai co phai chu post
+        if(!user.getUsername().equals(postService.getUsernameById(id))){
+            return new ResponseEntity<>(new ResponMessage(" khong co quyen"), HttpStatus.FORBIDDEN);
+        }
+
+        // sua post
+        Post postupdate = PostMapper.buildUpdate(postCreate);
+        post.get().setDescription(postupdate.getDescription());
+        post.get().setStatus(postupdate.getStatus());
+        post.get().setImage(postupdate.getImage());
+        post.get().setTimeUpdate(postupdate.getTimeUpdate());
+        // save post
+        postService.save(post.get());
+        return new ResponseEntity<>(new ResponMessage("update post done"),HttpStatus.OK);
+
+    }
+    // set role cho bai post
+//    @PutMapping("change/status/{status}")
+//    public ResponseEntity<?> changeStatus(@PathVariable)
+    // lay 1 list theo user cai nay chua dung toi vi chua co role theo status chua xu ly
     @GetMapping("/getpost/{user}")
     public ResponseEntity<?> getPostByUsername(@PathVariable String user){
         // lay ra user
         Optional<User> userPost = userService.findByUsername(user);
-        // tim trong sv
-        List a =  postService.findByUser(userPost.get());
+        if(!userPost.isPresent())
+            return new ResponseEntity<>(new ResponMessage("khong tim thay "),HttpStatus.BAD_REQUEST);
 
-        return new ResponseEntity<>(a, HttpStatus.OK);
+        // tim trong sv
+        List postList =  postService.findByUser(userPost.get());
+        if(postList.isEmpty())
+            return new ResponseEntity<>(new ResponMessage("khong co bai post nao"),HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(postList, HttpStatus.OK);
     }
-    // xoa post phai trung vs user hien tai
-    @PostMapping("/remove/{id}")
+
+    // xoa post theo id va  phai trung vs user hien tai // thieu xoa ca like va comment nua nen chua xong dc
+    @DeleteMapping("/remove/{id}")
     public ResponseEntity<?> deletePost(@PathVariable Long id) {
 
+        if(userDetailService.getCurrentUser() == null)
+            return new ResponseEntity<>(new ResponMessage(" khong co quyen"), HttpStatus.FORBIDDEN);
+        if(!postService.findById(id).isPresent())
+            return new ResponseEntity<>(new ResponMessage("khong tim thay "),HttpStatus.BAD_REQUEST);
+        // kiem tra co phiar user dang bai hay k
         if(userDetailService.getCurrentUser().getUsername().equals( postService.getUsernameById(id) )){
+            // tim kiem xem co bai post k
             postService.remove(id);
             return new ResponseEntity<>(new ResponMessage("delete done"),HttpStatus.OK);
         }
-        return new ResponseEntity<>(new ResponMessage("not delete"), HttpStatus.BAD_REQUEST);
+
+        return new ResponseEntity<>(new ResponMessage("khong co gi"), HttpStatus.BAD_REQUEST);
 
     }
-
-    @GetMapping("getPost/{id}")
-    public ResponseEntity<Optional<Post>> getPostById(@PathVariable Long id){
-        return new ResponseEntity<>(postService.findById(id), HttpStatus.OK);
-    }
-
-    // set role cho bai post
-//    @PutMapping("change/status/{status}")
-//    public ResponseEntity<?> changeStatus(@PathVariable)
-
 
 }

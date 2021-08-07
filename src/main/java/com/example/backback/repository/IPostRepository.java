@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface IPostRepository extends JpaRepository<Post,Long> {
     Iterable<Post> findAllByUser(User user);
+
     @Query(value = "SELECT u.username FROM post" +
             " join users  u on post.user_id = u.id " +
             "WHERE post.id = :id",nativeQuery = true)

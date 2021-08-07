@@ -128,12 +128,10 @@ public class FriendShipController {
     @GetMapping("/list")
     public ResponseEntity<?> getFriend(){
         // lay user hien tai ra
-
         User currentUser = userDetailService.getCurrentUser();
         // lay ra danh sach ban
 //            List a = (List) friendshipService.findAllFriendByStatus(currentUser.getId(),1);
         return new ResponseEntity<>(friendshipService.findAllFriendByStatus(currentUser.getId(),1),HttpStatus.OK);
-
     }
     @GetMapping("/listAccept")
     public ResponseEntity<?> getFriendAccept(){

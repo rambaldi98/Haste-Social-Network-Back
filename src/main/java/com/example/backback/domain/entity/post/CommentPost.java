@@ -1,13 +1,14 @@
 package com.example.backback.domain.entity.post;
 
 import com.example.backback.domain.entity.User;
-import lombok.EqualsAndHashCode;
+import lombok.Data;
+
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import java.time.Instant;
-import java.util.Collection;
 
+@Data
 @Entity
 @Table(name = "comment_post")
 public class CommentPost {
@@ -17,6 +18,7 @@ public class CommentPost {
     private Long id;
 
     @NotEmpty
+    @Lob
     private String text;
 
     @ManyToOne(fetch = FetchType.EAGER)
@@ -30,55 +32,31 @@ public class CommentPost {
     @JoinColumn(name = "userId")
     private User user;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "like_id")
-    private Like like;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
+    public CommentPost(String text, Post post, Instant createdDate) {
         this.text = text;
-    }
-
-    public Post getPost() {
-        return post;
-    }
-
-    public void setPost(Post post) {
         this.post = post;
-    }
-
-    public Instant getCreatedDate() {
-        return createdDate;
-    }
-
-    public void setCreatedDate(Instant createdDate) {
         this.createdDate = createdDate;
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
+    public CommentPost(String text, Post post, Instant createdDate, Instant timeUpdate, User user) {
+        this.text = text;
+        this.post = post;
+        this.createdDate = createdDate;
+        this.timeUpdate = timeUpdate;
         this.user = user;
     }
 
-    public Like getLike() {
-        return like;
+    public CommentPost() {
+
     }
 
-    public void setLike(Like like) {
-        this.like = like;
+    public CommentPost(String text, Instant createdDate) {
+        this.text = text;
+        this.createdDate = createdDate;
+    }
+
+    public CommentPost(String text, Instant createdDate, String update) {
+        this.text = text;
+        this.timeUpdate = createdDate;
     }
 }
