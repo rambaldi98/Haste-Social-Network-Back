@@ -142,7 +142,7 @@ public class FriendShipController {
         User currentUser = userDetailService.getCurrentUser();
         // lay ra danh sach ban
 //            List a = (List) friendshipService.findAllFriendByStatus(currentUser.getId(),1);
-        return new ResponseEntity<>(friendshipService.findAllFriendByStatus(currentUser.getId(),0),HttpStatus.OK);
+        return new ResponseEntity<>(friendshipService.findAllFriendByUserOneStatus(currentUser.getId(),0),HttpStatus.OK);
     }
     // lay ra danh sach can accept
 }

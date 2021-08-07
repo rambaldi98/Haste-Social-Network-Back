@@ -24,6 +24,7 @@ public class CommentPost {
     private Post post;
 
     private Instant createdDate;
+    private Instant timeUpdate;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "userId")

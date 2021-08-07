@@ -22,7 +22,7 @@ public class Post {
     @Lob
     private String description;
 
-    private Integer status = 2;// private = 0,1 ,2
+    private Integer status ;// private = 0,1 ,2 2 : public
     private String image;
 
     @ManyToOne(fetch = FetchType.EAGER)
@@ -30,7 +30,7 @@ public class Post {
     private User user;
 
 
-    private Instant createDate;
+    private Instant createDate; // thoi gian post sua update thoi gian
 
 
 
