@@ -8,7 +8,6 @@ import com.example.backback.dto.request.SignUpForm;
 import com.example.backback.dto.response.JwtResponse;
 import com.example.backback.dto.response.ResponMessage;
 import com.example.backback.security.jwt.JwtProvider;
-import com.example.backback.security.userprincal.UserDetailService;
 import com.example.backback.security.userprincal.UserPrinciple;
 import com.example.backback.service.impl.RoleServiceImpl;
 import com.example.backback.service.impl.UserServiceImpl;
@@ -24,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 @RequestMapping("/api/auth")
@@ -40,22 +40,15 @@ public class AuthController {
     AuthenticationManager authenticationManager;
     @Autowired
     JwtProvider jwtProvider;
-    @Autowired
-    UserDetailService userDetailService;
 
     @PostMapping("/signup")
     public ResponseEntity<?> register(@Valid @RequestBody SignUpForm signUpForm) {
         if (userService.existsByUsername(signUpForm.getUsername())) {
-            return ResponseEntity.badRequest().body(new ResponMessage("Username is exist"));
+            return new ResponseEntity<>(new ResponMessage("No User"), HttpStatus.OK);
         }
         if (userService.existsByEmail(signUpForm.getEmail())) {
-            return ResponseEntity.badRequest().body(new ResponMessage("Email is exist"));
+            return new ResponseEntity<>(new ResponMessage("No Email"), HttpStatus.OK);
         }
-        if (userService.existsByPhone(signUpForm.getPhone())) {
-            return ResponseEntity.badRequest().body(new ResponMessage("Phone is exist"));
-        }
-
-
         User user = new User(
                 signUpForm.getUsername(),
                 passwordEncoder.encode(signUpForm.getPassword()),
@@ -63,6 +56,7 @@ public class AuthController {
                 signUpForm.getPhone(),
                 signUpForm.getBirthday(),
                 signUpForm.getCity());
+
 
         Set<Role> roles = new HashSet<>();
 
@@ -84,16 +78,6 @@ public class AuthController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
         String token = jwtProvider.createToken(authentication);
         UserPrinciple userPrinciple = (UserPrinciple) authentication.getPrincipal();
-        return ResponseEntity.ok(new JwtResponse( userPrinciple.getId(),token, userPrinciple.getUsername(), userPrinciple.getAuthorities()));
+        return ResponseEntity.ok(new JwtResponse(token, userPrinciple.getUsername(), userPrinciple.getAuthorities()));
     }
-
-    @GetMapping("/getuser")
-    public ResponseEntity<User> getUser(){
-        User userCurrent = userDetailService.getCurrentUser();
-
-        System.out.println(userCurrent);
-        return  new ResponseEntity<>(userCurrent,HttpStatus.OK);
-    }
-
-
 }
