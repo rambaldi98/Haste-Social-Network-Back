@@ -1,13 +1,13 @@
 package com.example.backback.controller;
 
 import com.example.backback.domain.entity.User;
+import com.example.backback.domain.entity.post.CommentPost;
 import com.example.backback.domain.entity.post.Post;
 import com.example.backback.dto.request.PostCreate;
 import com.example.backback.dto.response.ResponMessage;
 import com.example.backback.mapper.PostMapper;
 import com.example.backback.security.userprincal.UserDetailService;
 import com.example.backback.service.impl.*;
-import javafx.geometry.Pos;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
