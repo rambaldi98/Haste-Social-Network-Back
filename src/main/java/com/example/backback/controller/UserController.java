@@ -75,7 +75,7 @@ public class UserController {
         user.setPhone(informationForm.getPhone());
         user.setBirthday(informationForm.getBirthday());
         user.setCity(informationForm.getCity());
-        user.setImage(informationForm.getImage());
+//        user.setImage(informationForm.getImage());
 
         userService.save(user);
 
@@ -96,6 +96,15 @@ public class UserController {
     @GetMapping("/allUserNoStatus")
     public ResponseEntity<Iterable<Object>> getAllUSerNoStatus(){
         return new ResponseEntity<>(userService.getAllUserAndStatus(), HttpStatus.OK);
+    }
+
+    @PostMapping("/change/avatar")
+    public ResponseEntity<User> changeAvatar(@Valid @RequestBody ChangeInformationForm informationForm){
+        UserPrinciple userPrinciple = (UserPrinciple) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        User user = userService.findByUsername(userPrinciple.getUsername()).get();
+        user.setImage(informationForm.getImage());
+        userService.save(user);
+        return new ResponseEntity<>(user,HttpStatus.OK);
     }
 
 }
