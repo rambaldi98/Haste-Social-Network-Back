@@ -109,7 +109,7 @@ public class FriendShipController {
         Optional<Friend> friend = friendshipService.findById(id);
         if(!friend.isPresent()) return new ResponseEntity<>(new ResponMessage("not find"), HttpStatus.BAD_REQUEST);
 
-        if(friend.get().getUsertwo().getUsername().equals(userDetailService.getCurrentUser().getUsername())){
+        if(!friend.get().getUsertwo().getUsername().equals(userDetailService.getCurrentUser().getUsername())){
 
 //            if(friend.get())
 
@@ -123,6 +123,31 @@ public class FriendShipController {
 //            return new ResponseEntity<>(friendshipService.save(friend.get()),HttpStatus.OK);
         }
         return new ResponseEntity<>(new ResponMessage("khong the chan ban "),HttpStatus.BAD_REQUEST);
+    }
+
+
+    //huy ket ban
+    @PostMapping("/unfriend/{id}")
+    public ResponseEntity<?> unFriend(@PathVariable("id") Long id){
+        // lay ve frend
+
+        Optional<Friend> friend = friendshipService.findById(id);
+        if(!friend.isPresent()) return new ResponseEntity<>(new ResponMessage("not find"), HttpStatus.BAD_REQUEST);
+
+        if(!friend.get().getUsertwo().getUsername().equals(userDetailService.getCurrentUser().getUsername())){
+
+//            if(friend.get())
+
+            if(friend.get().getStatus() == 1  )  {
+//                friend.get().setStatus(2);
+                friendshipService.delete(id);
+                return new ResponseEntity<>(new ResponMessage("Xoa thanh cong"),HttpStatus.OK);
+            }
+
+//            friend.get().setStatus(1);
+//            return new ResponseEntity<>(friendshipService.save(friend.get()),HttpStatus.OK);
+        }
+        return new ResponseEntity<>(new ResponMessage("khong the xoa ban "),HttpStatus.BAD_REQUEST);
     }
 
     @GetMapping("/list")
