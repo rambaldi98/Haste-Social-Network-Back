@@ -48,7 +48,7 @@ public class CommentController {
         commentPost.setUser(user);
         commentPost.setPost(post.get());
         commentPostService.save(commentPost);
-//        post.get().setComment_count(post.get().getComment_count()+1);
+        post.get().setComment_count(post.get().getComment_count()+1);
         postService.save(post.get());
         // tang count
 
