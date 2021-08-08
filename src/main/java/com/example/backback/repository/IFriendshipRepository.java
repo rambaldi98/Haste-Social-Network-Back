@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -20,7 +21,7 @@ public interface IFriendshipRepository extends JpaRepository<Friend, Long> {
     Optional<Friend> findByUseroneAndAndUsertwo(User userOne, User userTwo);
     @Query(value = "select * from Friend " +
             "where ((userone_id = :user) or (usertwo_id = :user))and (status = :status) ", nativeQuery = true)
-    Iterable<Friend> findAllFriendByStatus(@Param("user") Long user_id, @Param("status") Integer status);
+    List<Friend> findAllFriendByStatus(@Param("user") Long user_id, @Param("status") Integer status);
 
     @Query(value = "select * from Friend " +
             "where (userone_id = :user)and (status = :status) ", nativeQuery = true)

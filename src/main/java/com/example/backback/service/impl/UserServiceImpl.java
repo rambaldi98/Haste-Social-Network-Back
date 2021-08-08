@@ -7,6 +7,7 @@ import com.example.backback.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -58,7 +59,14 @@ public class UserServiceImpl implements IUserService {
     }
 
     @Override
+    @Transactional
     public Iterable<Object> getAllUserAndStatus() {
         return userRepository.getAllUserAndStatus();
+
+    }
+
+    @Override
+    public Optional<User> findUserById(Long id) {
+        return userRepository.findById(id);
     }
 }

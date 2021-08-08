@@ -17,4 +17,5 @@ public interface IUserService {
     //lay ra list nguoi dung;
     Iterable<User> getAllUser();
     Iterable<Object> getAllUserAndStatus();
+    Optional<User> findUserById(Long id);
 }

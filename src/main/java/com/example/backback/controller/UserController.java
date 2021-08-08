@@ -19,6 +19,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Optional;
 
 @RequestMapping("/api/user")
@@ -90,12 +91,18 @@ public class UserController {
 
     @GetMapping("/allUser")
     public ResponseEntity<Iterable<User>> getAllUSer(){
-        return new ResponseEntity<>(userService.getAllUser(), HttpStatus.OK);
+        User currentUser = userDetailService.getCurrentUser();
+        List users = (List) userService.getAllUser();
+        users.remove(currentUser);
+        return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
     @GetMapping("/allUserNoStatus")
     public ResponseEntity<Iterable<Object>> getAllUSerNoStatus(){
-        return new ResponseEntity<>(userService.getAllUserAndStatus(), HttpStatus.OK);
+        User currentUser = userDetailService.getCurrentUser();
+        List users = (List) userService.getAllUserAndStatus();
+        users.remove(currentUser);
+        return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
     @PostMapping("/change/avatar")

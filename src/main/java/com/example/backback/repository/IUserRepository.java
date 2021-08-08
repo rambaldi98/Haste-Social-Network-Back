@@ -16,7 +16,7 @@ public interface IUserRepository extends JpaRepository<User, Long> {
     Boolean existsByPhone(String phone);
 //    User findByUsername(String name);
     //xem info nguoi khac theo id
-@Query(value = "Select u, b from User u  left join Friend b on u.id= b.usertwo.id  where b.status is null")
+@Query(value = "Select u from User u  left join Friend b on u.id= b.usertwo.id  where b.status is null")
     Iterable<Object> getAllUserAndStatus();
 
 

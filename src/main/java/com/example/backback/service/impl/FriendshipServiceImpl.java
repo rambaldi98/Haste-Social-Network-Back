@@ -7,7 +7,9 @@ import com.example.backback.repository.IFriendshipRepository;
 import com.example.backback.service.IFriendShipService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -45,7 +47,8 @@ public class FriendshipServiceImpl implements IFriendShipService {
     }
 
     @Override
-    public Iterable<Friend> findAllFriendByStatus(Long user_id, Integer status) {
+    @Transactional
+    public List<Friend> findAllFriendByStatus(Long user_id, Integer status) {
         return friendshipRepository.findAllFriendByStatus(user_id,status);
     }
 

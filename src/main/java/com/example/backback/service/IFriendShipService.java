@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface IFriendShipService {
@@ -23,7 +24,7 @@ public interface IFriendShipService {
 
     Optional<Friend> findByUseroneAndAndUsertwo(User userOne, User userTwo);
 
-    Iterable<Friend> findAllFriendByStatus( Long user_id, Integer status);
+    List<Friend> findAllFriendByStatus(Long user_id, Integer status);
     Iterable<Friend> findAllFriendByUserOneStatus( Long user_id, Integer status);
     Iterable<Friend> findAllFriendByUserTwoStatus( Long user_id, Integer status);
 
