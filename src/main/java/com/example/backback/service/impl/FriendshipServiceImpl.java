@@ -54,4 +54,9 @@ public class FriendshipServiceImpl implements IFriendShipService {
         return friendshipRepository.findAllFriendByByUserOneStatus(user_id, status);
     }
 
+    @Override
+    public Iterable<Friend> findAllFriendByUserTwoStatus(Long user_id, Integer status) {
+        return friendshipRepository.findAllFriendByByUserTwoStatus(user_id,status);
+    }
+
 }

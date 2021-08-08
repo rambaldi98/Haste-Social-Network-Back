@@ -57,7 +57,7 @@ public class FriendShipController {
         if(!friend.isPresent()) return new ResponseEntity<>(new ResponMessage("not find"), HttpStatus.BAD_REQUEST);
 
         // kiem tra xem user hien tai co la user 2 hay khong trong db hay khong
-        if(friend.get().getUsertwo().getUsername().equals(userDetailService.getCurrentUser().getUsername())) {
+        if(!friend.get().getUsertwo().getUsername().equals(userDetailService.getCurrentUser().getUsername())) {
             if (friend.get().getStatus() == 0) {
                 friend.get().setStatus(1);
                 friendshipService.save(friend.get());
@@ -81,7 +81,7 @@ public class FriendShipController {
         Optional<Friend> friend = friendshipService.findById(id);
         if(!friend.isPresent()) return new ResponseEntity<>(new ResponMessage("not find"), HttpStatus.BAD_REQUEST);
 
-        if(friend.get().getUsertwo().getUsername().equals(userDetailService.getCurrentUser().getUsername())){
+        if(!friend.get().getUsertwo().getUsername().equals(userDetailService.getCurrentUser().getUsername())){
 
 //            if(friend.get())
 
@@ -119,8 +119,6 @@ public class FriendShipController {
                 return new ResponseEntity<>(new ResponMessage("chan thanh cong"),HttpStatus.OK);
             }
 
-//            friend.get().setStatus(1);
-//            return new ResponseEntity<>(friendshipService.save(friend.get()),HttpStatus.OK);
         }
         return new ResponseEntity<>(new ResponMessage("khong the chan ban "),HttpStatus.BAD_REQUEST);
     }
@@ -136,16 +134,12 @@ public class FriendShipController {
 
         if(!friend.get().getUsertwo().getUsername().equals(userDetailService.getCurrentUser().getUsername())){
 
-//            if(friend.get())
 
             if(friend.get().getStatus() == 1  )  {
-//                friend.get().setStatus(2);
                 friendshipService.delete(id);
                 return new ResponseEntity<>(new ResponMessage("Xoa thanh cong"),HttpStatus.OK);
             }
 
-//            friend.get().setStatus(1);
-//            return new ResponseEntity<>(friendshipService.save(friend.get()),HttpStatus.OK);
         }
         return new ResponseEntity<>(new ResponMessage("khong the xoa ban "),HttpStatus.BAD_REQUEST);
     }
@@ -160,8 +154,10 @@ public class FriendShipController {
         return new ResponseEntity<>(friendshipService.findAllFriendByStatus(currentUser.getId(),1),HttpStatus.OK);
 
     }
-    @GetMapping("/listAccept")
-    public ResponseEntity<?> getFriendAccept(){
+
+    //loi moi ket ban da gui
+    @GetMapping("/friendrequestsent")
+    public ResponseEntity<?> getFriendRequestSent(){
         // lay user hien tai ra
 
         User currentUser = userDetailService.getCurrentUser();
@@ -170,6 +166,15 @@ public class FriendShipController {
         return new ResponseEntity<>(friendshipService.findAllFriendByUserOneStatus(currentUser.getId(),0),HttpStatus.OK);
     }
     // lay ra danh sach can accept
+
+
+    //cho ban xac nhan ket ban
+    @GetMapping("/friendrequestreceived")
+    public ResponseEntity<?> getFriendRequestReceived(){
+        User currentUser = userDetailService.getCurrentUser();
+       return new ResponseEntity<>(friendshipService.findAllFriendByUserTwoStatus(currentUser.getId(),0), HttpStatus.OK);
+    }
+
 
 
 
