@@ -1,7 +1,6 @@
 package com.example.backback.controller;
 
 import com.example.backback.domain.entity.User;
-import com.example.backback.domain.entity.post.CommentPost;
 import com.example.backback.domain.entity.post.Post;
 import com.example.backback.dto.request.PostCreate;
 import com.example.backback.dto.response.ResponMessage;

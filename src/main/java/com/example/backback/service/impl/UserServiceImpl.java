@@ -3,7 +3,6 @@ package com.example.backback.service.impl;
 
 import com.example.backback.domain.entity.User;
 import com.example.backback.repository.IUserRepository;
-import com.example.backback.security.userprincal.UserPrinciple;
 import com.example.backback.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -51,5 +50,15 @@ public class UserServiceImpl implements IUserService {
     @Override
     public boolean checkPassword(User user, String password) {
         return passwordEncoder.matches(password, user.getPassword());
+    }
+
+    @Override
+    public Iterable<User> getAllUser() {
+        return userRepository.findAll();
+    }
+
+    @Override
+    public Iterable<Object> getAllUserAndStatus() {
+        return userRepository.getAllUserAndStatus();
     }
 }

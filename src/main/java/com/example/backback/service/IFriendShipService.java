@@ -25,5 +25,8 @@ public interface IFriendShipService {
 
     Iterable<Friend> findAllFriendByStatus( Long user_id, Integer status);
     Iterable<Friend> findAllFriendByUserOneStatus( Long user_id, Integer status);
+    Iterable<Friend> findAllFriendByUserTwoStatus( Long user_id, Integer status);
+
+
 
 }

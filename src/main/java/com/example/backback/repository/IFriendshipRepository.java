@@ -12,6 +12,11 @@ import java.util.Optional;
 @Repository
 public interface IFriendshipRepository extends JpaRepository<Friend, Long> {
 
+    @Query(value = "select * from Friend " +
+            "where (usertwo_id = :user)and (status = :status) ", nativeQuery = true)
+    Iterable<Friend> findAllFriendByByUserTwoStatus(@Param("user") Long user_id, @Param("status") Integer status);
+
+
     Optional<Friend> findByUseroneAndAndUsertwo(User userOne, User userTwo);
     @Query(value = "select * from Friend " +
             "where ((userone_id = :user) or (usertwo_id = :user))and (status = :status) ", nativeQuery = true)

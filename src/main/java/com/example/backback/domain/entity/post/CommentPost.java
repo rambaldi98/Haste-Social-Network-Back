@@ -18,7 +18,6 @@ public class CommentPost {
     private Long id;
 
     @NotEmpty
-    @Lob
     private String text;
 
     @ManyToOne(fetch = FetchType.EAGER)

@@ -37,6 +37,10 @@ public class Post {
     private Integer comment_count = 0;
 
 
+    @ManyToMany(mappedBy = "post")
+    @EqualsAndHashCode.Exclude
+    private Collection<Like> like;
+
     public Post() {
     }
     // post create
