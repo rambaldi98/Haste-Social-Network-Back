@@ -11,6 +11,4 @@ public class PostCreate {
     String description;
     String image;
     Integer status;
-
-
 }
