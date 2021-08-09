@@ -194,7 +194,6 @@ public class FriendShipController {
         if(fiends.isEmpty()){
             return new ResponseEntity<>(new ResponMessage("khong co ban"),HttpStatus.NOT_FOUND);
         }
-
         //
         List friendList = new ArrayList();
 
