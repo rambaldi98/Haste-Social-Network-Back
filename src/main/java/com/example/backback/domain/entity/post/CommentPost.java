@@ -52,6 +52,7 @@ public class CommentPost {
     public CommentPost(String text, Instant createdDate) {
         this.text = text;
         this.createdDate = createdDate;
+//        this.timeUpdate = Instant.now();
     }
 
     public CommentPost(String text, Instant createdDate, String update) {
