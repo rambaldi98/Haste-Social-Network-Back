@@ -119,7 +119,7 @@ public class CommentController {
 
     // lay list comment theo id bai post
     @GetMapping("/{id}")
-    public ResponseEntity<?> getListComment(@PathVariable Long id){
+    public ResponseEntity<?> getListCommentByIdPost(@PathVariable Long id){
         User user = userDetailService.getCurrentUser();
         // get list post ra
         Optional<Post> post = postService.findById(id);
@@ -128,5 +128,7 @@ public class CommentController {
         if(listcomment.isEmpty()) return new ResponseEntity<>(new ResponMessage("khong co bai post"), HttpStatus.BAD_REQUEST);
         return new ResponseEntity<>(listcomment,HttpStatus.OK);
     }
+    
+
 
 }
