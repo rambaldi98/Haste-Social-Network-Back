@@ -71,7 +71,7 @@ public class LikePostController {
         // lay ra bai post day
         Optional<Post> post = postService.findById(id);
         if(!post.isPresent())
-            return new ResponseEntity<>(post.get().getLike_count(),HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(new ResponMessage("khong tim thay"),HttpStatus.BAD_REQUEST);
 
         Optional<LikePost> likePost = likeService.findByUserAndPost(user,post.get());
         if(!likePost.isPresent()) {

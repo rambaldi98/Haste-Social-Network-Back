@@ -132,7 +132,7 @@ public class PostController {
     public ResponseEntity<?> deletePost(@PathVariable Long id) {
 
         if(userDetailService.getCurrentUser() == null)
-            return new ResponseEntity<>(new ResponMessage(" khong co quyen"), HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>(new ResponMessage(" khong co quyen"), HttpStatus.BAD_REQUEST);
         Optional<Post> post = postService.findById(id);
         if(!post.isPresent())
             return new ResponseEntity<>(new ResponMessage("khong tim thay bai post"),HttpStatus.BAD_REQUEST);

@@ -114,4 +114,9 @@ public class UserController {
         return new ResponseEntity<>(user,HttpStatus.OK);
     }
 
+    @GetMapping("/viewInfor/{id}")
+    public ResponseEntity<?> ViewInforFriend(@PathVariable Long id){
+        return new ResponseEntity<>(userService.findUserById(id), HttpStatus.OK);
+    }
+
 }

@@ -24,5 +24,9 @@ public interface IUserRepository extends JpaRepository<User, Long> {
     Iterable<User> getAllUserAndStatus();
 
 
+// quyery trung gian
+//    select users.id from users join friend
+//    where users.id != 1 and( (users.id = friend.userone_id) or (users.id = friend.usertwo_id))
+//    @Query()
 //    @Query()
 }
