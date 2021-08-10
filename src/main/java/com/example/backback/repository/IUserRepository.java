@@ -16,8 +16,12 @@ public interface IUserRepository extends JpaRepository<User, Long> {
     Boolean existsByPhone(String phone);
 //    User findByUsername(String name);
     //xem info nguoi khac theo id
+// quyery trung gian
+//    select users.id from users join friend
+//    where users.id != 1 and( (users.id = friend.userone_id) or (users.id = friend.usertwo_id))
+//    @Query()
 @Query(value = "Select u from User u  left join Friend b on u.id= b.usertwo.id  where b.status is null")
-    Iterable<Object> getAllUserAndStatus();
+    Iterable<User> getAllUserAndStatus();
 
 
 //    @Query()

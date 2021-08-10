@@ -10,5 +10,6 @@ import lombok.NoArgsConstructor;
 public class PostCreate {
     String description;
     String image;
+    String mp3url;
     Integer status;
 }

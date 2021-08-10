@@ -16,6 +16,6 @@ public interface IUserService {
     boolean checkPassword(User user, String password);
     //lay ra list nguoi dung;
     Iterable<User> getAllUser();
-    Iterable<Object> getAllUserAndStatus();
+    Iterable<User> getAllUserAndStatus();
     Optional<User> findUserById(Long id);
 }

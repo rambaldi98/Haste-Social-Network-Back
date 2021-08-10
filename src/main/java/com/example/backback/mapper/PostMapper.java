@@ -16,19 +16,22 @@ public class PostMapper {
     private String description;
     private Integer status;
     private String image;
+    private String mp3url;
     private Instant createDate;
     private Instant timeUpdate; // thoi gian update lai bai viet
-    public PostMapper(String description, Integer status, String image, Instant createDate) {
+    public PostMapper(String description, Integer status, String image,String mp3url, Instant createDate) {
         this.description = description;
         this.status = status;
         this.image = image;
+        this.mp3url = mp3url;
         this.createDate = createDate;
     }
 
-    public PostMapper(int id,String description, Integer status, String image,Instant timeUpdate) {
+    public PostMapper(int id,String description, Integer status, String image,String mp3url,Instant timeUpdate) {
         this.description = description;
         this.status = status;
         this.image = image;
+        this.mp3url = mp3url;
         this.timeUpdate = timeUpdate;
     }
 

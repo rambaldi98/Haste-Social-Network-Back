@@ -22,7 +22,7 @@ public class Post {
     @Lob
     private String description;
 
-    private Integer status =2;// private = 0,1 ,2 2 : public
+    private Integer status = 2;// private = 0,1 ,2 2 : public
 
     private String image;
     private String mp3Url;
