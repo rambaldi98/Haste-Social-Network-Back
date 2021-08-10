@@ -3,6 +3,7 @@ package com.example.backback.controller;
 import com.example.backback.domain.entity.Password;
 import com.example.backback.domain.entity.User;
 import com.example.backback.dto.request.ChangeInformationForm;
+import com.example.backback.dto.request.FriendRequestForm;
 import com.example.backback.dto.request.SignInForm;
 import com.example.backback.dto.response.ResponMessage;
 import com.example.backback.security.jwt.JwtProvider;
@@ -117,6 +118,11 @@ public class UserController {
     @GetMapping("/viewInfor/{id}")
     public ResponseEntity<?> ViewInforFriend(@PathVariable Long id){
         return new ResponseEntity<>(userService.findUserById(id), HttpStatus.OK);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<Iterable<User>> searchByUsername(@RequestBody FriendRequestForm friendRequestForm){
+        return new ResponseEntity<>(userService.searchByUsername(friendRequestForm.getUsernametwo()), HttpStatus.OK);
     }
 
 }

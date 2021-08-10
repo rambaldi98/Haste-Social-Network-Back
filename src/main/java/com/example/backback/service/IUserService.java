@@ -18,4 +18,7 @@ public interface IUserService {
     Iterable<User> getAllUser();
     Iterable<Object> getAllUserAndStatus();
     Optional<User> findUserById(Long id);
+
+    Iterable<User> searchByUsername(String username);
+
 }
