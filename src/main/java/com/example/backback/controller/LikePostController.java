@@ -51,7 +51,7 @@ public class LikePostController {
 
             likeService.save(like);
             postService.save(post.get());
-            return new ResponseEntity<>(new ResponMessage("like done"),HttpStatus.OK);
+            return new ResponseEntity<>(post.get().getLike_count(),HttpStatus.OK);
         }
 
         // neu ton tai thi xoa no di
@@ -59,6 +59,26 @@ public class LikePostController {
         if(post.get().getLike_count() > 0)
             post.get().setLike_count(post.get().getLike_count()-1);
         postService.save(post.get());
-        return new ResponseEntity<>(new ResponMessage("unlike done"),HttpStatus.OK);
+//        return new ResponseEntity<>(new ResponMessage("unlike done"),HttpStatus.OK);
+        return new ResponseEntity<>(post.get().getLike_count(),HttpStatus.OK);
+    }
+
+    @GetMapping("/check/{id}")
+    public ResponseEntity<?> checkLike(@PathVariable Long id){
+        // lay user hientai
+        User user = userDetailService.getCurrentUser();
+
+        // lay ra bai post day
+        Optional<Post> post = postService.findById(id);
+        if(!post.isPresent())
+            return new ResponseEntity<>(new ResponMessage("khong tim thay"),HttpStatus.BAD_REQUEST);
+
+        Optional<LikePost> likePost = likeService.findByUserAndPost(user,post.get());
+        if(!likePost.isPresent()) {
+//            return new ResponseEntity(new ResponMessage("chua like"),HttpStatus.OK);
+            return new ResponseEntity(post.get().getLike_count(),HttpStatus.OK);
+        }
+
+        return new ResponseEntity(post.get().getLike_count(),HttpStatus.BAD_REQUEST);
     }
 }

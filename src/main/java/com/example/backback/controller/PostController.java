@@ -115,7 +115,7 @@ public class PostController {
         if(!userPost.isPresent())
             return new ResponseEntity<>(new ResponMessage("khong tim thay "),HttpStatus.BAD_REQUEST);
 
-        // tim trong sv
+
         List postList =  postService.findByUser(userPost.get());
         if(postList.isEmpty())
             return new ResponseEntity<>(new ResponMessage("khong co bai post nao"),HttpStatus.BAD_REQUEST);
@@ -132,7 +132,7 @@ public class PostController {
     public ResponseEntity<?> deletePost(@PathVariable Long id) {
 
         if(userDetailService.getCurrentUser() == null)
-            return new ResponseEntity<>(new ResponMessage(" khong co quyen"), HttpStatus.FORBIDDEN);
+            return new ResponseEntity<>(new ResponMessage(" khong co quyen"), HttpStatus.BAD_REQUEST);
         Optional<Post> post = postService.findById(id);
         if(!post.isPresent())
             return new ResponseEntity<>(new ResponMessage("khong tim thay bai post"),HttpStatus.BAD_REQUEST);
@@ -147,8 +147,7 @@ public class PostController {
                 likeCommentService.deleteAllByCommentPost((CommentPost) commentPost);
                 commentPostService.delete((CommentPost) commentPost);
             }
-            // xoa
-//            commentPostService.deleteAllByPost(post.get());
+
 
 
             postService.remove(id);

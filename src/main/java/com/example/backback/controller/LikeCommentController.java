@@ -50,13 +50,26 @@ public class LikeCommentController {
             commentPost.get().setLike_comment_count(commentPost.get().getLike_comment_count()+1);
             likeCommentService.save(like);
             commentPostService.save(commentPost.get());
-            return new ResponseEntity<>(new ResponMessage("like done"),HttpStatus.OK);
+            return new ResponseEntity<>(commentPost.get().getLike_comment_count(),HttpStatus.OK);
         }
         // neu ton tai thi xoa no di
         likeCommentService.delete(likeComment.get());
         if(commentPost.get().getLike_comment_count() > 0)
         commentPost.get().setLike_comment_count(commentPost.get().getLike_comment_count()-1);
         commentPostService.save(commentPost.get());
-        return new ResponseEntity<>(new ResponMessage("unlike done"),HttpStatus.OK);
+        return new ResponseEntity<>(commentPost.get().getLike_comment_count(),HttpStatus.OK);
+    }
+
+    @GetMapping("/check/{id}")
+    public ResponseEntity<?> checkLike(@PathVariable Long id){
+        User user = userDetailService.getCurrentUser();
+        Optional<CommentPost> commentPost = commentPostService.findById(id);
+        if(!commentPost.isPresent())
+            return new ResponseEntity<>(new ResponMessage("khong tim thay comment de like"), HttpStatus.NOT_FOUND);
+        Optional<LikeComment> likeComment = likeCommentService.findByUserAndComment(user,commentPost.get());
+        if(!likeComment.isPresent()){
+            return new ResponseEntity<>(commentPost.get().getLike_comment_count(),HttpStatus.OK);
+        }
+        return new ResponseEntity<>(commentPost.get().getLike_comment_count(),HttpStatus.BAD_REQUEST);
     }
 }

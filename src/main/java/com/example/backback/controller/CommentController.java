@@ -106,11 +106,11 @@ public class CommentController {
             commentPostService.deleteById(id);
 
 
-            if(post.get().getLike_count() > 0)
-                post.get().setComment_count(post.get().getLike_count()-1);
+            if(post.get().getComment_count() > 0)
+                post.get().setComment_count(post.get().getComment_count() - 1);
             else
                 post.get().setComment_count(0);
-            commentPostService.save(commentPost.get());
+            postService.save(post.get());
             return new ResponseEntity<>(new ResponMessage("delete comment done"),HttpStatus.OK);
         }
 
