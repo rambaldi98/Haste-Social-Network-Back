@@ -7,6 +7,8 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
+import static org.springframework.data.repository.query.parser.Part.Type.LIKE;
+
 @Repository
 public interface IUserRepository extends JpaRepository<User, Long> {
 
@@ -14,7 +16,7 @@ public interface IUserRepository extends JpaRepository<User, Long> {
     Boolean existsByUsername(String username); //username da co trong DB chua, khi tao du lieu
     Boolean existsByEmail(String email); //email da co trong DB chua
     Boolean existsByPhone(String phone);
-//    User findByUsername(String name);
+
     //xem info nguoi khac theo id
 // quyery trung gian
 //    select users.id from users join friend
@@ -23,6 +25,9 @@ public interface IUserRepository extends JpaRepository<User, Long> {
 @Query(value = "Select u from User u  left join Friend b on u.id= b.usertwo.id  where b.status is null")
     Iterable<User> getAllUserAndStatus();
 
+
+    @Query("Select u from User u where u.username LIKE  %?1%")
+            Iterable<User> searchByUsername(String username);
 
 // quyery trung gian
 //    select users.id from users join friend
