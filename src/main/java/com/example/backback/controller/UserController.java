@@ -5,6 +5,7 @@ import com.example.backback.domain.entity.User;
 import com.example.backback.dto.request.ChangeInformationForm;
 import com.example.backback.dto.request.FriendRequestForm;
 import com.example.backback.dto.request.SignInForm;
+import com.example.backback.dto.request.UserForm;
 import com.example.backback.dto.response.ResponMessage;
 import com.example.backback.security.jwt.JwtProvider;
 import com.example.backback.security.userprincal.UserDetailService;
@@ -120,9 +121,9 @@ public class UserController {
         return new ResponseEntity<>(userService.findUserById(id), HttpStatus.OK);
     }
 
-    @GetMapping("/search")
-    public ResponseEntity<Iterable<User>> searchByUsername(@RequestBody FriendRequestForm friendRequestForm){
-        return new ResponseEntity<>(userService.searchByUsername(friendRequestForm.getUsernametwo()), HttpStatus.OK);
+    @PostMapping("/search")
+    public ResponseEntity<Iterable<User>> searchByUsername(@RequestBody FriendRequestForm userForm){
+        return new ResponseEntity<>(userService.searchByUsername(userForm.getUsernametwo()), HttpStatus.OK);
     }
 
 }
